@@ -31,10 +31,7 @@ public class TankShoot : MonoBehaviour
     void TryToShoot()
     {
         if (!CheckIfCanShoot())
-        {
-            Debug.Log("Can't shoot yet");
             return;
-        }
         
         Shoot();
     }
