@@ -49,6 +49,7 @@ public class TankShoot : MonoBehaviour
         GameObject bullet = Instantiate(original: _bulletPrefab);
         SetBulletPositionAndRotation(bullet);
         bullet.GetComponent<Bullet>().tankData = _tankData;
+        bullet.GetComponent<Bullet>().TankParent = tankManager.gameObject;
         _lastTimeShot = Time.time;
     }
 
