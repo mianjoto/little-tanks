@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class TankPlayerMovement : MonoBehaviour
+[RequireComponent(typeof(TankMovement))]
+public class PlayerTankMovement : MonoBehaviour
 {
-    public float MoveSpeed = 1f;
-    public float RotateSpeed = 1f;
-
+    [SerializeField] TankMovement tankMovement;
     Transform _transform;
+    float _moveSpeed;
+    float _headRotateSpeed;
+
     const string HORIZONTAL_AXIS = "Horizontal";
     const string VERTICAL_AXIS = "Vertical";
     bool _movingForward;
@@ -19,13 +21,13 @@ public class TankPlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         if (_movingForward)
-            _transform.Translate(Vector3.forward * MoveSpeed * Time.deltaTime);
+            tankMovement.MoveForward();
         if (_movingBackward)
-            _transform.Translate(Vector3.back * MoveSpeed * Time.deltaTime);
+            tankMovement.MoveBackward();
         if (_rotatingLeft)
-            _transform.Rotate(Vector3.up, RotateSpeed * -90 * Time.deltaTime);
+            tankMovement.RotateCounterClockwise();
         if (_rotatingRight)
-            _transform.Rotate(Vector3.up, RotateSpeed * 90 * Time.deltaTime);
+            tankMovement.RotateClockwise();
     }
 
     void ReadMovementInput()
