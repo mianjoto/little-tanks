@@ -17,4 +17,9 @@ public class TankData : ScriptableObject
         public byte BulletDamage = 1;
         public byte NumberOfRicochets = 1;
     #endregion
+
+    #region Movement Stats
+        public float MovementSpeedInUnitsPerSecond = 1f;
+        public float HeadRotateSpeedInRadiansPerSecond = 1f;
+    #endregion
 }
