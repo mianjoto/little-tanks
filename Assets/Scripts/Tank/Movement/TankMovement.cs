@@ -11,7 +11,7 @@ public class TankMovement : MonoBehaviour
     {
         _transform = transform;
         _moveSpeed = tankManager.tankData.MovementSpeed;
-        _headRotateSpeed = tankManager.tankData.HeadRotateSpeed;
+        _headRotateSpeed = tankManager.tankData.BodyRotateSpeed;
     }
 
     public void MoveForward() => _transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);
