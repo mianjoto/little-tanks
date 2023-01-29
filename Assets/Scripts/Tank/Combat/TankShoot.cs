@@ -1,39 +1,34 @@
 using UnityEngine;
 
+[RequireComponent(typeof(TankManager))]
 public class TankShoot : MonoBehaviour
 {
-    [SerializeField] InputListener inputListener;
-    [SerializeField] TankManager tankManager;
     [SerializeField] Transform bulletSpawnPoint;
-    [SerializeField] Transform headOrientation;
+    [SerializeField] Transform headTransform;
+    TankManager _tankManager;
 
     TankData _tankData;
 
     float _lastTimeShot = 0f;
     GameObject _bulletPrefab;
-    
-    void OnEnable()
-    {
-        inputListener.OnShoot += TryToShoot;
-    }
-
-    void OnDisable()
-    {
-        inputListener.OnShoot -= TryToShoot;
-    }
 
     void Awake()
     {
-       _tankData = tankManager.tankData;
+        _tankManager = GetComponent<TankManager>();
+       _tankData = _tankManager.TankData;
        _bulletPrefab = _tankData.BulletPrefab;
     }
 
-    void TryToShoot()
+    public void Shoot()
     {
         if (!CheckIfCanShoot())
+        {
+            // TODO: Add a cooldown indication
+            Debug.Log($"{transform.name} cannot shoot, on cooldown!");
             return;
+        }
         
-        Shoot();
+        InstantiateBullet();
     }
 
     bool CheckIfCanShoot()
@@ -44,19 +39,19 @@ public class TankShoot : MonoBehaviour
             return false;
     }
         
-    void Shoot()
+    void InstantiateBullet()
     {
         GameObject bullet = Instantiate(original: _bulletPrefab);
         SetBulletPositionAndRotation(bullet);
         bullet.GetComponent<Bullet>().tankData = _tankData;
-        bullet.GetComponent<Bullet>().TankParent = tankManager.gameObject;
+        bullet.GetComponent<Bullet>().TankParent = _tankManager.gameObject;
         _lastTimeShot = Time.time;
     }
 
     void SetBulletPositionAndRotation(GameObject bullet)
     {
         bullet.transform.position = bulletSpawnPoint.position;
-        float angle = headOrientation.eulerAngles.y;
+        float angle = headTransform.eulerAngles.y;
         bullet.transform.eulerAngles = new Vector3(bullet.transform.eulerAngles.x, angle, bullet.transform.eulerAngles.z);
     }
 

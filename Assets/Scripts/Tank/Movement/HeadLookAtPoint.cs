@@ -15,8 +15,8 @@ public class HeadLookAtPoint : MonoBehaviour
 
     void Awake()
     {
-        _rotationDamping = tankManager.tankData.HeadRotationDamping;
-        _isFollowingCursor = tankManager.tankData.HeadFollowsCursor;
+        _rotationDamping = tankManager.TankData.HeadRotationDamping;
+        _isFollowingCursor = tankManager.TankData.HeadFollowsCursor;
     }
 
     void Start() => _mainCamera = Camera.main;

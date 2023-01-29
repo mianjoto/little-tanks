@@ -10,8 +10,8 @@ public class TankMovement : MonoBehaviour
     void Awake()
     {
         _transform = transform;
-        _moveSpeed = tankManager.tankData.MovementSpeed;
-        _headRotateSpeed = tankManager.tankData.BodyRotateSpeed;
+        _moveSpeed = tankManager.TankData.MovementSpeed;
+        _headRotateSpeed = tankManager.TankData.BodyRotateSpeed;
     }
 
     public void MoveForward() => _transform.Translate(Vector3.forward * _moveSpeed * Time.deltaTime);

@@ -139,8 +139,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2994217297835207834}
   - component: {fileID: 2919624418259785683}
-  - component: {fileID: 69554060}
-  - component: {fileID: 69554061}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -178,40 +176,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fae159ed465586459d3676a61784389, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tankManager: {fileID: 300594868}
   levelMask:
     serializedVersion: 2
     m_Bits: 64
-  rotationDamping: 10
---- !u!114 &69554060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2994217297835207835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0619b8040069dd84bb2e9835f0af1f59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tankData: {fileID: 11400000, guid: 120ad1a5ccf46e746886d8dcc45aa914, type: 2}
-  Health: 0
---- !u!114 &69554061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2994217297835207835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15847c830c14ab64e8a0308f3bac48d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputListener: {fileID: 0}
-  tankManager: {fileID: 300594868}
-  bulletSpawnPoint: {fileID: 1936471291}
-  headOrientation: {fileID: 2994217297835207834}
 --- !u!1 &2994217298280276808
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,8 +386,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2994217298781320475}
   - component: {fileID: 1896305477}
-  - component: {fileID: 300594865}
   - component: {fileID: 300594868}
+  - component: {fileID: 2076500470}
+  - component: {fileID: 7692320862355608675}
+  - component: {fileID: 2076500471}
   m_Layer: 0
   m_Name: Tank (Player)
   m_TagString: PlayerTank
@@ -462,20 +432,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &300594865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2994217298781320476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89bfec9588596f64ba93100601725444, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MoveSpeed: 1
-  RotateSpeed: 1
 --- !u!114 &300594868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,8 +444,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0619b8040069dd84bb2e9835f0af1f59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tankData: {fileID: 11400000, guid: 120ad1a5ccf46e746886d8dcc45aa914, type: 2}
+  TankData: {fileID: 11400000, guid: 120ad1a5ccf46e746886d8dcc45aa914, type: 2}
   Health: 3
+--- !u!114 &2076500470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2994217298781320476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4119f01579734194ebbcc057700370f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputListener: {fileID: 0}
+--- !u!114 &7692320862355608675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2994217298781320476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7504bd1a9a345f4d98b71e65c519db9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tankManager: {fileID: 300594868}
+--- !u!114 &2076500471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2994217298781320476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15847c830c14ab64e8a0308f3bac48d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletSpawnPoint: {fileID: 1936471291}
+  headTransform: {fileID: 2994217297835207834}
 --- !u!1 &2994217299008129016
 GameObject:
   m_ObjectHideFlags: 0

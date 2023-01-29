@@ -545,6 +545,72 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 74.02, y: 0, z: 0}
+--- !u!1001 &1365245969
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 300594868, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: TankData
+      value: 
+      objectReference: {fileID: 11400000, guid: 9328199beedd0394d9557e065b6ca2e6, type: 2}
+    - target: {fileID: 2076500470, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: inputListener
+      value: 
+      objectReference: {fileID: 27972261}
+    - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2994217298781320476, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+      propertyPath: m_Name
+      value: EnemyTank
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2076500470, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
 --- !u!1 &1657561845
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,14 +843,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 69554061, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
+    - target: {fileID: 2076500470, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
       propertyPath: inputListener
       value: 
       objectReference: {fileID: 27972261}
-    - target: {fileID: 1936471291, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.75
-      objectReference: {fileID: 0}
     - target: {fileID: 2994217298781320475, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -831,7 +893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2994217298781320476, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
       propertyPath: m_Name
-      value: Tank (Player)
+      value: PlayerTank
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}

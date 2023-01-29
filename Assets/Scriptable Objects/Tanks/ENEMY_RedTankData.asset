@@ -9,19 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34bf75bf8c57442419841a527927647a, type: 3}
-  m_Name: PlayerTankData
+  m_Script: {fileID: 11500000, guid: fdb81e43e7bb6fd408c6355c54e17b20, type: 3}
+  m_Name: ENEMY_RedTankData
   m_EditorClassIdentifier: 
-  TankName: PlayerTank
-  TankTag: PlayerTank
+  TankName: RedTank
+  TankTag: Enemy
   StartingHealth: 3
   BulletPrefab: {fileID: 7377736342347359843, guid: f7c01f3edffc446488b8dc536d4b7dcb, type: 3}
   ShootCooldownInSeconds: 1
-  BulletSpeedInUnitsPerSecond: 3
+  BulletSpeedInUnitsPerSecond: 1
   BulletLifeTimeInSeconds: 5
   BulletDamage: 1
-  NumberOfRicochets: 1
+  NumberOfRicochets: 2
   MovementSpeed: 1
   BodyRotateSpeed: 1
   HeadRotationDamping: 10
-  HeadFollowsCursor: 1
+  HeadFollowsCursor: 0
+  PatrolSpeed: 5
+  PatrolRange: 5

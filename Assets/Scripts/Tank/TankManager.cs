@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class TankManager : MonoBehaviour
 {
-    public TankData tankData;
+    public TankData TankData;
     public byte Health;
 
     void Start()
     {
-        transform.name = tankData.TankName;
-        transform.tag = tankData.TankTag;
-        Health = tankData.StartingHealth;
+        transform.name = TankData.TankName;
+        transform.tag = TankData.TankTag;
+        Health = TankData.StartingHealth;
     }
 
     public void TakeDamage(byte damage)

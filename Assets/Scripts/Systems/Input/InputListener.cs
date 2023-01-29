@@ -14,7 +14,7 @@ public class InputListener : MonoBehaviour
     #endregion
 
     #region Actions
-        public Action OnShoot;
+        public Action OnShootKey;
         public Action OnMovingForward;
         public Action OnMovingBackward;
         public Action OnRotatingCounterClockwise;
@@ -53,7 +53,7 @@ public class InputListener : MonoBehaviour
     private void HandleListenForInput()
     {
         if (Input.GetKeyDown(shootKey))
-            OnShoot?.Invoke();
+            OnShootKey?.Invoke();
         if (Input.GetKey(moveForwardKey))
             OnMovingForward?.Invoke();
         if (Input.GetKey(moveBackwardKey))
