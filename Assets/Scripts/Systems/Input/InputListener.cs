@@ -8,8 +8,8 @@ public class InputListener : MonoBehaviour
     #region Keybinds
         [SerializeField] KeyCode shootKey = KeyCode.Mouse0;
         [SerializeField] KeyCode moveForwardKey = KeyCode.W;
-        [SerializeField] KeyCode moveBackwardKey = KeyCode.A;
-        [SerializeField] KeyCode rotateCounterClockwiseKey = KeyCode.S;
+        [SerializeField] KeyCode moveBackwardKey = KeyCode.S;
+        [SerializeField] KeyCode rotateCounterClockwiseKey = KeyCode.A;
         [SerializeField] KeyCode rotateClockwiseKey = KeyCode.D;
     #endregion
 
