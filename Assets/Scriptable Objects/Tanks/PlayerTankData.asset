@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerTankData
   m_EditorClassIdentifier: 
   TankName: PlayerTank
-  TankTag: PlayerTank
+  TankTag: Player
   StartingHealth: 3
   BulletPrefab: {fileID: 7377736342347359843, guid: f7c01f3edffc446488b8dc536d4b7dcb, type: 3}
   ShootCooldownInSeconds: 1

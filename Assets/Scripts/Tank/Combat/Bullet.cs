@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    const string PLAYER_TAG = "Player";
+    const string ENEMY_TAG = "Enemy";
     const string BULLET_TAG = "Bullet";
-    const string TANK_TAG = "Tank";
-    const string PLAYER_TANK_TAG = "PlayerTank";
     const string WALL_TAG = "Wall";
     
     public TankData tankData;
@@ -53,12 +53,11 @@ public class Bullet : MonoBehaviour
     // Since the bullet is a capsule that is rotated, its axes are also rotated.
     // Because of this, modifying transform.forward acts as transform.down.
     // We re-definine forward to be up, which will make the bullet move in the correct direction.
-    // void Move() => transform.position += transform.up * tankData.BulletSpeedInUnitsPerSecond * Time.deltaTime;
     void Move() => _rigidbody.velocity = transform.up * tankData.BulletSpeedInUnitsPerSecond;
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag(TANK_TAG) || collision.gameObject.CompareTag(PLAYER_TANK_TAG))
+        if (collision.gameObject.CompareTag(ENEMY_TAG) || collision.gameObject.CompareTag(PLAYER_TAG))
         {
             collision.gameObject.GetComponent<TankManager>().TakeDamage(tankData.BulletDamage);
             DestroyBullet(gameObject);

@@ -1,12 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TankManager : MonoBehaviour
 {
     public TankData TankData;
+    public TankHead TankHead;
     public byte Health;
+
+    void Awake()
+    {
+        if (TankHead == null)
+            TankHead = GetComponentInChildren<TankHead>();
+    }
 
     void Start()
     {
