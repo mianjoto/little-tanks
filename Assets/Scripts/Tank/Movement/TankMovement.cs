@@ -18,4 +18,5 @@ public class TankMovement : MonoBehaviour
     public void MoveBackward() => _transform.Translate(Vector3.back * _moveSpeed * Time.deltaTime);
     public void RotateCounterClockwise() => _transform.Rotate(Vector3.up, _headRotateSpeed * -90 * Time.deltaTime);
     public void RotateClockwise() => _transform.Rotate(Vector3.up, _headRotateSpeed * 90 * Time.deltaTime);
+    public void RotateToPosition(Vector3 position) => _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(position - _transform.position), Time.deltaTime * _headRotateSpeed);
 }
