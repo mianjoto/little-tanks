@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -562,8 +562,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e18b894c7561147b95d903021b8153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 0}
-  tankHead: {fileID: 1671827369}
 --- !u!1 &1657561845
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,17 +593,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1671827369 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2919624418259785683, guid: 3e37615cb8eabe54786f8eb2eb789945, type: 3}
-  m_PrefabInstance: {fileID: 1910683312}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fae159ed465586459d3676a61784389, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1910683312
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -743,7 +730,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9a42fd813d69b0a4e8286994c4a5c0c4, type: 2}
+  - {fileID: 2100000, guid: af187e35464269744885d704119833c1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -840,7 +827,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9a42fd813d69b0a4e8286994c4a5c0c4, type: 2}
+  - {fileID: 2100000, guid: 7962120b31ccb9f45a8c804244a775bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
