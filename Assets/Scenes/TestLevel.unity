@@ -1039,6 +1039,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 538902794}
+    - target: {fileID: 932301505894277359, guid: 4c648fc73903c954296b47998686c87d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 932301505894277394, guid: 4c648fc73903c954296b47998686c87d, type: 3}
       propertyPath: m_Name
       value: 2x1 Ramp
