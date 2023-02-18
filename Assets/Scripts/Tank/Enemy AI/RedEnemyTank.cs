@@ -12,10 +12,9 @@ public class RedEnemyTank : BaseEnemyStateMachine
     }
     
     public override void Attack()
-    {    
-        _tankHead.LookAtPoint(_playerPosition);
-        _tankMovement.RotateToPosition(_playerPosition);
-        base.Chase();
+    {
+        Chase();
+        LeadShotAndLookAtPlayer();
         base.Attack();
     }
 

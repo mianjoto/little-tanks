@@ -21,13 +21,6 @@ public class PlayerManager : MonoBehaviour
     void OnEnable() => ListenForInput();
     void OnDisable() => StopListeningForInput();
 
-    public void ToggleListeningForInput()
-    {
-        if (_isListeningForInput)
-            StopListeningForInput();
-        else
-            ListenForInput();
-    }
 
     void ListenForInput()
     {
@@ -47,5 +40,13 @@ public class PlayerManager : MonoBehaviour
         inputListener.OnRotatingClockwise -= _tankMovement.RotateClockwise;
         inputListener.OnRotatingCounterClockwise -= _tankMovement.RotateCounterClockwise;
         inputListener.OnShootKey -= _tankShoot.Shoot;
+    }
+    
+    public void ToggleListeningForInput()
+    {
+        if (_isListeningForInput)
+            StopListeningForInput();
+        else
+            ListenForInput();
     }
 }

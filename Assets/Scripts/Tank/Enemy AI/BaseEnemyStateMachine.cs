@@ -18,6 +18,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     #region Player Properties
     protected const string PLAYER_TAG = "Player";
     protected Transform _playerTransform;
+    protected Rigidbody _playerRigidbody;
     protected Vector3 _playerPosition;
     #endregion
 
@@ -25,6 +26,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     protected EnemyState _currentState;
     protected float _playerDetectionRange;
     protected float _attackRange;
+    protected float _leadShotFactorInUnits;
     #endregion
     
     protected virtual void Awake()
@@ -38,6 +40,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         _enemyTankData = (EnemyTankData) _tankManager.TankData;
         _playerDetectionRange = _enemyTankData.PlayerDetectionRange;
         _attackRange = _enemyTankData.AttackRange;
+        _leadShotFactorInUnits = _enemyTankData.LeadShotFactorInUnits;
         GetPlayerTransform();
     }
 
@@ -50,7 +53,11 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     public abstract void HandleStateLogic();
     public abstract void TransitionStates();
     public abstract void Patrol();
-    public virtual void Chase() => _tankMovement.MoveForward();
+    public virtual void Chase()
+    {
+        _tankMovement.RotateToPosition(_playerPosition);
+        _tankMovement.MoveForward();
+    }
     public virtual void Attack() => _tankShoot.Shoot();
 
     protected virtual void GetPlayerTransform()
@@ -58,9 +65,11 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         if (_playerTransform != null)
             return;
         
-        _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        var player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
+        _playerTransform = player.transform;
+        _playerRigidbody = player.GetComponent<Rigidbody>();
 
-        if (_playerTransform == null)
+        if (_playerTransform == null || _playerRigidbody == null)
             this.enabled = false;
     }
 
@@ -70,6 +79,39 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
             GetPlayerTransform();
         _playerPosition = _playerTransform.position;
         return _playerPosition;
+    }
+    
+    public virtual void LookAtPlayer()
+    {
+        if (_playerPosition == null)
+            return;
+        
+        _tankHead.LookAtPoint(_playerPosition);
+    }
+
+    public virtual void LookAtPredictedPlayerPosition()
+    {
+        if (_leadShotFactorInUnits == 0)
+            return;
+        
+        var predictedPlayerPosition = GetPredictedPlayerPosition();
+        _tankHead.LookAtPoint(predictedPlayerPosition);
+    }
+
+    public virtual void LeadShotAndLookAtPlayer()
+    {
+        if (!IsPlayerInAttackRange())
+            LookAtPredictedPlayerPosition();
+        else
+        {
+            _tankHead.LookAtPoint(_playerPosition);
+        }
+    }
+
+    private Vector3 GetPredictedPlayerPosition()
+    {
+        Vector3 playerVelocity = _playerRigidbody.velocity;
+        return _playerPosition + (playerVelocity * _leadShotFactorInUnits);
     }
 
     protected bool IsPlayerInDetectionRange()
@@ -101,6 +143,10 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         Gizmos.DrawWireSphere(_transform.position, _playerDetectionRange);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_transform.position, _attackRange);
+        
+        Gizmos.color = Color.green;
+        var predictedPlayerPosition = GetPredictedPlayerPosition();
+        Gizmos.DrawWireSphere(predictedPlayerPosition, 0.5f);
     }
 }
 
