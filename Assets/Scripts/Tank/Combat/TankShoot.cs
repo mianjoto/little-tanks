@@ -6,6 +6,7 @@ public class TankShoot : MonoBehaviour
     [SerializeField] Transform bulletSpawnPoint;
     [SerializeField] Transform headTransform;
     TankManager _tankManager;
+    TankAmmoReserve _tankAmmoReserve;
 
     TankData _tankData;
 
@@ -17,28 +18,18 @@ public class TankShoot : MonoBehaviour
         _tankManager = GetComponent<TankManager>();
        _tankData = _tankManager.TankData;
        _bulletPrefab = _tankData.BulletPrefab;
+        _tankAmmoReserve = new TankAmmoReserve(_tankData);
     }
 
-    public void Shoot()
+    public void Shoot() 
     {
-        if (!CheckIfCanShoot())
-        {
-            // TODO: Add a cooldown indication
-            Debug.Log($"{transform.name} cannot shoot, on cooldown!");
-            return;
-        }
-        
-        InstantiateBullet();
+        if (HasAmmoAndCanShoot)
+            InstantiateBullet();
     }
 
-    bool CheckIfCanShoot()
-    {
-        if (_lastTimeShot + _tankData.ShootCooldownInSeconds <= Time.time)
-            return true;
-        else
-            return false;
-    }
-        
+    bool HasAmmoAndCanShoot => _tankAmmoReserve.HasAmmo && CanShootAfterShootDelay;
+    bool CanShootAfterShootDelay => Time.time > _lastTimeShot + _tankData.ShootDelayInSeconds;
+
     void InstantiateBullet()
     {
         GameObject bullet = Instantiate(original: _bulletPrefab);

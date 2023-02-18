@@ -68,6 +68,9 @@ public class Bullet : MonoBehaviour
 
         if (collision.gameObject.CompareTag(BULLET_TAG))
         {
+            if (collision.gameObject.GetComponent<Bullet>().TankParent == TankParent)
+                return;
+                
             // NOTE: Potentially unsafe
             DestroyBullet(collision.gameObject);
             DestroyBullet(gameObject);

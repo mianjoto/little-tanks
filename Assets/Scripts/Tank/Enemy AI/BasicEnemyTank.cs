@@ -43,6 +43,6 @@ public class BasicEnemyTank : BaseEnemyStateMachine
     public override void Patrol()
     {
         // TODO: Implement patrol logic with waypoints
-        Debug.Log($"{_transform.name} is patrolling...");
+        // Debug.Log($"{_transform.name} is patrolling...");
     }
 }

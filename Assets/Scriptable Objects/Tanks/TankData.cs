@@ -11,8 +11,11 @@ public class TankData : ScriptableObject
 
     #region Shooting Stats
     public GameObject BulletPrefab;
-    public float ShootCooldownInSeconds = 1f;
     public float BulletSpeedInUnitsPerSecond = 1f;
+    public byte MaxBulletsInReserve = 4;
+    public float ShootDelayInSeconds = 0.1f;
+    public float ReloadAfterShootingDelayInSeconds = 1f;
+    public float PerBulletReloadTimeInSeconds = 1.5f;
     public float BulletLifeTimeInSeconds = 5;
     public byte BulletDamage = 1;
     public byte NumberOfRicochets = 1;
