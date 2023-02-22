@@ -95,7 +95,8 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
             return;
         
         var predictedPlayerPosition = GetPredictedPlayerPosition();
-        _tankHead.LookAtPoint(predictedPlayerPosition);
+        if (predictedPlayerPosition != null)
+            _tankHead.LookAtPoint(predictedPlayerPosition);
     }
 
     public virtual void LeadShotAndLookAtPlayer()
@@ -154,5 +155,6 @@ public enum EnemyState
 {
     Patrol,
     Chase,
-    Attack
+    Attack,
+    Wait
 }

@@ -9,6 +9,7 @@ public class TankHead : MonoBehaviour
 
     bool _isFollowingCursor;
     float _rotationDamping;
+    float _lookingAtThreshold = 0.1f;
 
     const float LOCKED_X_ROTATION = 0;
     const float LOCKED_Z_ROTATION = 0;
@@ -28,12 +29,32 @@ public class TankHead : MonoBehaviour
         LookAtCursor();
     }
 
-    public void LookAtPoint(Vector3 position)
+    public void LookAtPoint(Vector3 position, bool relative = false)
     {
-        Quaternion rotation = Quaternion.LookRotation(position - transform.position, Vector3.up);
+        var targetPosition = position;
+        if (relative)
+            targetPosition = transform.position + position;
+        
+        Quaternion rotation = Quaternion.LookRotation(targetPosition - transform.position, Vector3.up);
+        
         rotation.x = LOCKED_X_ROTATION;
         rotation.z = LOCKED_Z_ROTATION;
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, _rotationDamping * Time.deltaTime);
+    }
+
+    public Vector3 LookAtRandomRelativePoint()
+    {
+        Vector2 randomPointInUnitCircle = Random.insideUnitCircle;
+        Vector3 randomPoint = new Vector3(randomPointInUnitCircle.x, 0, randomPointInUnitCircle.y);
+        LookAtPoint(randomPoint, relative: true);
+        return randomPoint;
+    }
+
+    public bool IsLookingAtPoint(Vector3 point)
+    {
+        Vector3 direction = point - transform.position;
+        float lookAmount = Vector3.Dot(transform.forward, direction.normalized);
+        return lookAmount > _lookingAtThreshold;
     }
 
     public void LookAtCursor()
@@ -43,7 +64,7 @@ public class TankHead : MonoBehaviour
             return;
         LookAtPoint(mousePosition);
     }
-
+   
     private Vector3 GetMousePosition()
     {
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);

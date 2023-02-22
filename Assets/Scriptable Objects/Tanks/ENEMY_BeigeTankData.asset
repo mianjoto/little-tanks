@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fdb81e43e7bb6fd408c6355c54e17b20, type: 3}
-  m_Name: ENEMY_RedTankData
+  m_Name: ENEMY_BeigeTankData
   m_EditorClassIdentifier: 
-  TankName: RedTank
+  TankName: BeigeTank
   TankTag: Enemy
   StartingHealth: 1
   BulletPrefab: {fileID: 7377736342347359843, guid: f7c01f3edffc446488b8dc536d4b7dcb, type: 3}
-  BulletSpeedInUnitsPerSecond: 3.5
-  MaxBulletsInReserve: 2
-  ShootDelayInSeconds: 2
-  ReloadAfterShootingDelayInSeconds: 0.5
-  PerBulletReloadTimeInSeconds: 0.5
-  BulletLifeTimeInSeconds: 5
+  BulletSpeedInUnitsPerSecond: 1
+  MaxBulletsInReserve: 1
+  ShootDelayInSeconds: 0.1
+  ReloadAfterShootingDelayInSeconds: 1.5
+  PerBulletReloadTimeInSeconds: 1.5
+  BulletLifeTimeInSeconds: 8
   BulletDamage: 1
-  NumberOfRicochets: 2
-  MovementSpeed: 1.4
-  BodyRotateSpeed: 1
-  HeadRotationDamping: 7
+  NumberOfRicochets: 4
+  MovementSpeed: 0
+  BodyRotateSpeed: 2
+  HeadRotationDamping: 2
   HeadFollowsCursor: 0
   PlayerDetectionRange: 10
-  AttackRange: 6
-  LeadShotFactorInUnits: 2
-  IsAlwaysLookingAtPlayer: 1
-  IsAlwaysRotatingTowardPlayer: 1
-  IsAlwaysChasingPlayer: 1
-  IsAlwaysAttackingAtPlayer: 1
+  AttackRange: 5
+  LeadShotFactorInUnits: 3
+  IsAlwaysLookingAtPlayer: 0
+  IsAlwaysRotatingTowardPlayer: 0
+  IsAlwaysChasingPlayer: 0
+  IsAlwaysAttackingAtPlayer: 0
