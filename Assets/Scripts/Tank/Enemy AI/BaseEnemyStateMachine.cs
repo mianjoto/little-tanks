@@ -28,7 +28,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     protected float _attackRange;
     protected float _leadShotFactorInUnits;
     #endregion
-    
+
     protected virtual void Awake()
     {
         // Assign required components
@@ -37,7 +37,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         _tankMovement = GetComponent<TankMovement>();
         _transform = transform;
         _tankHead = _tankManager.TankHead;
-        _enemyTankData = (EnemyTankData) _tankManager.TankData;
+        _enemyTankData = (EnemyTankData)_tankManager.TankData;
         _playerDetectionRange = _enemyTankData.PlayerDetectionRange;
         _attackRange = _enemyTankData.AttackRange;
         _leadShotFactorInUnits = _enemyTankData.LeadShotFactorInUnits;
@@ -46,13 +46,13 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
 
     protected virtual void Update()
     {
-        _playerPosition = GetPlayerPositionInWorld();        
+        _playerPosition = GetPlayerPositionInWorld();
         HandleStateLogic();
     }
 
     public abstract void HandleStateLogic();
     public abstract void TransitionStates();
-    public abstract void Patrol();
+    public virtual void Patrol() { }
     public virtual void Chase()
     {
         _tankMovement.RotateToPosition(_playerPosition);
@@ -64,7 +64,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     {
         if (_playerTransform != null)
             return;
-        
+
         var player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
         _playerTransform = player.transform;
         _playerRigidbody = player.GetComponent<Rigidbody>();
@@ -80,12 +80,12 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         _playerPosition = _playerTransform.position;
         return _playerPosition;
     }
-    
+
     public virtual void LookAtPlayer()
     {
         if (_playerPosition == null)
             return;
-        
+
         _tankHead.LookAtPoint(_playerPosition);
     }
 
@@ -93,7 +93,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     {
         if (_leadShotFactorInUnits == 0)
             return;
-        
+
         var predictedPlayerPosition = GetPredictedPlayerPosition();
         if (predictedPlayerPosition != null)
             _tankHead.LookAtPoint(predictedPlayerPosition);
@@ -118,20 +118,14 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     protected bool IsPlayerInDetectionRange()
     {
         if (_transform == null || _playerPosition == null)
-        {
-            Debug.Log($"Transform or player position is null in {transform.name}");
             return false;
-        }
         return Vector3.Distance(_transform.position, _playerPosition) < _playerDetectionRange;
     }
 
     protected bool IsPlayerInAttackRange()
     {
         if (_transform == null || _playerPosition == null)
-        {
-            Debug.Log($"Transform or player position is null in {transform.name}");
             return false;
-        }
         return Vector3.Distance(_transform.position, _playerPosition) < _attackRange;
     }
 
@@ -144,7 +138,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         Gizmos.DrawWireSphere(_transform.position, _playerDetectionRange);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_transform.position, _attackRange);
-        
+
         Gizmos.color = Color.green;
         var predictedPlayerPosition = GetPredictedPlayerPosition();
         Gizmos.DrawWireSphere(predictedPlayerPosition, 0.5f);
@@ -155,6 +149,5 @@ public enum EnemyState
 {
     Patrol,
     Chase,
-    Attack,
-    Wait
+    Attack
 }

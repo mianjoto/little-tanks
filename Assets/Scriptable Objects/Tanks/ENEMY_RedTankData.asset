@@ -28,6 +28,7 @@ MonoBehaviour:
   BodyRotateSpeed: 1
   HeadRotationDamping: 7
   HeadFollowsCursor: 0
+  StateChangeCooldownInSeconds: 0.3
   PlayerDetectionRange: 10
   AttackRange: 6
   LeadShotFactorInUnits: 2

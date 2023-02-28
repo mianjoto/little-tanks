@@ -7,59 +7,75 @@ public class BeigeEnemyTank : BaseEnemyStateMachine
     Coroutine _lookAtRandomPointCoroutine;
     Coroutine _waitCoroutine;
 
-    const float MIN_DUMB_TIME = 2f;
-    const float MAX_DUMB_TIME = 7f;
-    const float CHANCE_TO_PATROL = 0.5f;
-    const float CHANCE_TO_ATTACK = 0.7f;
-    
-    [SerializeField] bool isLookingAtRandomPoint; 
+    bool isPatrolling;
+    bool _isWaiting;
+
+    float _minimumWaitTime;
+    float _maximumWaitTime;
+    float _lastTimeChangedState;
+    float _minimumHeadRotationAngle;
+    float _stateChangeCooldown;
+
+    const float CHANCE_TO_WAIT = 0.8f;
+
+    bool isBusy => isPatrolling || _isWaiting;
+    bool shouldWait => Random.value < CHANCE_TO_WAIT;
+    bool isOnStateChangeCooldown => Time.time < _lastTimeChangedState + _stateChangeCooldown;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _minimumWaitTime = _enemyTankData.MinimumWaitTimeInSeconds;
+        _maximumWaitTime = _enemyTankData.MaximumWaitTimeInSeconds;
+        _minimumHeadRotationAngle = _enemyTankData.MinimumRandomHeadRotationAngle;
+        _stateChangeCooldown = _enemyTankData.StateChangeCooldownInSeconds;
+    }
 
     void Start()
     {
         _currentState = EnemyState.Patrol;
-        if (_lookAtRandomPointCoroutine != null)
-            StopCoroutine(_lookAtRandomPointCoroutine);
+        _lastTimeChangedState = Time.time;
     }
 
-    // Beige tanks can only patrol (look around) and attack at random
     public override void HandleStateLogic()
     {
+        if (isBusy || isOnStateChangeCooldown) return;
+
         if (_currentState == EnemyState.Patrol)
             Patrol();
         else if (_currentState == EnemyState.Attack)
             base.Attack();
-        else if (_currentState == EnemyState.Wait)
-            Wait();
-        
+
         TransitionStates();
     }
 
+    // Beige tanks look somewhere random and shoot with a high likelihood to wait between each action
     public override void TransitionStates()
     {
-        if (WantsToPatrol)
-            _currentState = EnemyState.Patrol;
-        else if (WantsToAttack)
-            _currentState = EnemyState.Attack;
-        else
-            _currentState = EnemyState.Wait;
-    }
+        if (shouldWait) Wait();
 
-    [SerializeField] bool WantsToPatrol => Random.value < CHANCE_TO_PATROL;
-    [SerializeField] bool WantsToAttack => Random.value < CHANCE_TO_ATTACK;
-    [SerializeField] bool IsBusy => _lookAtRandomPointCoroutine != null || _waitCoroutine != null;
+        if (_currentState == EnemyState.Patrol)
+            _currentState = EnemyState.Attack;
+        else if (_currentState == EnemyState.Attack)
+            _currentState = EnemyState.Patrol;
+
+        _lastTimeChangedState = Time.time;
+    }
 
     IEnumerator LookAtRandomPoint()
     {
-        Vector3 randomPoint = _tankHead.LookAtRandomRelativePoint();
+        isPatrolling = true;
+        bool isLookingAtRandomPoint = false;
 
+        Vector3 randomPoint = _tankHead.GetRandomRelativePoint(_minimumHeadRotationAngle);
         while (!isLookingAtRandomPoint)
         {
             _tankHead.LookAtPoint(randomPoint, relative: true);
-            isLookingAtRandomPoint = _tankHead.IsLookingAtPoint(randomPoint);
+            isLookingAtRandomPoint = _tankHead.IsLookingAtPoint(randomPoint, relative: true);
             yield return null;
         }
 
-        _currentState = EnemyState.Wait;
+        isPatrolling = false;
     }
 
     public override void Patrol()
@@ -68,7 +84,6 @@ public class BeigeEnemyTank : BaseEnemyStateMachine
             StopCoroutine(_lookAtRandomPointCoroutine);
 
         _lookAtRandomPointCoroutine = StartCoroutine(LookAtRandomPoint());
-        Debug.Log("Patrol coroutine == null" + _lookAtRandomPointCoroutine == null);
     }
 
     void Wait()
@@ -81,9 +96,11 @@ public class BeigeEnemyTank : BaseEnemyStateMachine
 
     IEnumerator WaitForRandomTime()
     {
-        float randomWaitTimeInSeconds = Random.Range(MIN_DUMB_TIME, MAX_DUMB_TIME);
-        Debug.Log("Waiting for " + randomWaitTimeInSeconds + " seconds, current state is: " + _currentState + ".");
+        _isWaiting = true;
+
+        float randomWaitTimeInSeconds = Random.Range(_minimumWaitTime, _maximumWaitTime);
         yield return new WaitForSeconds(randomWaitTimeInSeconds);
-        Debug.Log("Done waiting");
+
+        _isWaiting = false;
     }
 }

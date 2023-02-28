@@ -7,9 +7,11 @@ public class TankHead : MonoBehaviour
 
     Camera _mainCamera;
 
-    bool _isFollowingCursor;
     float _rotationDamping;
-    float _lookingAtThreshold = 0.1f;
+    bool _isFollowingCursor;
+    bool _rotatesHeadSmoothly;
+    byte _lookAtAngleThreshold;
+    float _headRotationSpeed;
 
     const float LOCKED_X_ROTATION = 0;
     const float LOCKED_Z_ROTATION = 0;
@@ -18,6 +20,9 @@ public class TankHead : MonoBehaviour
     {
         _rotationDamping = tankManager.TankData.HeadRotationDamping;
         _isFollowingCursor = tankManager.TankData.HeadFollowsCursor;
+        _rotatesHeadSmoothly = tankManager.TankData.RotatesHeadSmoothly;
+        _lookAtAngleThreshold = tankManager.TankData.LookAtAngleThresholdInDegrees;
+        _headRotationSpeed = tankManager.TankData.HeadRotationSpeed;
     }
 
     void Start() => _mainCamera = Camera.main;
@@ -31,30 +36,51 @@ public class TankHead : MonoBehaviour
 
     public void LookAtPoint(Vector3 position, bool relative = false)
     {
-        var targetPosition = position;
+        Vector3 targetPosition = position;
         if (relative)
             targetPosition = transform.position + position;
-        
+
         Quaternion rotation = Quaternion.LookRotation(targetPosition - transform.position, Vector3.up);
-        
+
         rotation.x = LOCKED_X_ROTATION;
         rotation.z = LOCKED_Z_ROTATION;
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, _rotationDamping * Time.deltaTime);
+
+        if (_rotatesHeadSmoothly)
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, _rotationDamping * Time.deltaTime);
+        else
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, _headRotationSpeed * Time.deltaTime);
     }
 
-    public Vector3 LookAtRandomRelativePoint()
+    public Vector3 GetRandomRelativePoint(float angleThresholdInDegrees = 0)
     {
-        Vector2 randomPointInUnitCircle = Random.insideUnitCircle;
-        Vector3 randomPoint = new Vector3(randomPointInUnitCircle.x, 0, randomPointInUnitCircle.y);
-        LookAtPoint(randomPoint, relative: true);
-        return randomPoint;
+        bool isValidRandomPoint = false;
+        Vector2 randomPointInUnitCircle;
+        Vector3 relativeRandomPoint = Vector3.zero;
+        Vector3 forwardDirection = transform.forward;
+
+        while (!isValidRandomPoint)
+        {
+            randomPointInUnitCircle = Random.insideUnitCircle;
+            relativeRandomPoint = new Vector3(randomPointInUnitCircle.x, 0, randomPointInUnitCircle.y);
+            isValidRandomPoint = !IsAngleBetweenVectorsBelowThreshold(transform.forward, relativeRandomPoint.normalized, angleThresholdInDegrees);
+        }
+
+        return relativeRandomPoint;
     }
 
-    public bool IsLookingAtPoint(Vector3 point)
+    bool IsAngleBetweenVectorsBelowThreshold(Vector3 point1, Vector3 point2, float angleThresholdInDegrees = 0)
+    {
+        float angle = Vector3.Angle(point1, point2);
+        return angle < angleThresholdInDegrees;
+    }
+
+    public bool IsLookingAtPoint(Vector3 point, bool relative = false)
     {
         Vector3 direction = point - transform.position;
-        float lookAmount = Vector3.Dot(transform.forward, direction.normalized);
-        return lookAmount > _lookingAtThreshold;
+        if (relative)
+            direction = point;
+
+        return IsAngleBetweenVectorsBelowThreshold(transform.forward, direction.normalized, _lookAtAngleThreshold);
     }
 
     public void LookAtCursor()
@@ -64,7 +90,7 @@ public class TankHead : MonoBehaviour
             return;
         LookAtPoint(mousePosition);
     }
-   
+
     private Vector3 GetMousePosition()
     {
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);

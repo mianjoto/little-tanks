@@ -26,8 +26,13 @@ MonoBehaviour:
   NumberOfRicochets: 4
   MovementSpeed: 0
   BodyRotateSpeed: 2
-  HeadRotationDamping: 2
+  HeadRotationDamping: 1
   HeadFollowsCursor: 0
+  StateChangeCooldownInSeconds: 2
+  MinimumWaitTimeInSeconds: 1
+  MaximumWaitTimeInSeconds: 3
+  LookAtAngleThresholdInDegrees: 20
+  MinimumRandomHeadRotationAngle: 60
   PlayerDetectionRange: 10
   AttackRange: 5
   LeadShotFactorInUnits: 3
