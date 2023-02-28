@@ -2,7 +2,8 @@ using UnityEngine;
 
 public interface IEnemyBehavior
 {
-    Vector3 GetPlayerPositionInWorld();
+    Vector3 PlayerPosition { get; }
+
     void HandleStateLogic();
     void TransitionStates();
     void Patrol();
