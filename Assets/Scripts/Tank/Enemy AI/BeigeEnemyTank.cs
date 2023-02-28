@@ -9,18 +9,14 @@ public class BeigeEnemyTank : BaseEnemyStateMachine
 
     bool isPatrolling;
     bool _isWaiting;
+    float _lastTimeChangedState;
 
     float _minimumWaitTime;
     float _maximumWaitTime;
-    float _lastTimeChangedState;
     float _minimumHeadRotationAngle;
     float _stateChangeCooldown;
 
     const float CHANCE_TO_WAIT = 0.8f;
-
-    bool isBusy => isPatrolling || _isWaiting;
-    bool shouldWait => Random.value < CHANCE_TO_WAIT;
-    bool isOnStateChangeCooldown => Time.time < _lastTimeChangedState + _stateChangeCooldown;
 
     protected override void Awake()
     {
@@ -34,7 +30,7 @@ public class BeigeEnemyTank : BaseEnemyStateMachine
     void Start()
     {
         _currentState = EnemyState.Patrol;
-        _lastTimeChangedState = Time.time;
+        _lastTimeChangedState = -100;
     }
 
     public override void HandleStateLogic()
@@ -58,8 +54,18 @@ public class BeigeEnemyTank : BaseEnemyStateMachine
             _currentState = EnemyState.Attack;
         else if (_currentState == EnemyState.Attack)
             _currentState = EnemyState.Patrol;
+    }
 
-        _lastTimeChangedState = Time.time;
+    bool isBusy => isPatrolling || _isWaiting;
+    bool shouldWait => Random.value < CHANCE_TO_WAIT;
+    bool isOnStateChangeCooldown => Time.time < _lastTimeChangedState + _stateChangeCooldown;
+    
+    public override void Patrol()
+    {
+        if (_lookAtRandomPointCoroutine != null)
+            StopCoroutine(_lookAtRandomPointCoroutine);
+
+        _lookAtRandomPointCoroutine = StartCoroutine(LookAtRandomPoint());
     }
 
     IEnumerator LookAtRandomPoint()
@@ -76,14 +82,8 @@ public class BeigeEnemyTank : BaseEnemyStateMachine
         }
 
         isPatrolling = false;
-    }
 
-    public override void Patrol()
-    {
-        if (_lookAtRandomPointCoroutine != null)
-            StopCoroutine(_lookAtRandomPointCoroutine);
-
-        _lookAtRandomPointCoroutine = StartCoroutine(LookAtRandomPoint());
+        _lastTimeChangedState = Time.time;
     }
 
     void Wait()
@@ -100,7 +100,8 @@ public class BeigeEnemyTank : BaseEnemyStateMachine
 
         float randomWaitTimeInSeconds = Random.Range(_minimumWaitTime, _maximumWaitTime);
         yield return new WaitForSeconds(randomWaitTimeInSeconds);
-
         _isWaiting = false;
+
+        _lastTimeChangedState = Time.time;
     }
 }
