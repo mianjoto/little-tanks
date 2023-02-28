@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(TankManager), typeof(TankShoot), typeof(TankMovement))]
@@ -27,6 +28,28 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     protected float _playerDetectionRange;
     protected float _attackRange;
     protected float _leadShotFactorInUnits;
+    protected float _minimumHeadRotationAngle;
+    protected float _stateChangeCooldown;
+    protected float _minimumWaitTime;
+    protected float _maximumWaitTime;
+    #endregion
+
+    #region Enemy State Information
+    protected float _lastTimeChangedState;
+    protected bool _isPatrolling; // naive fix
+    protected bool _isWaiting; // naive fix
+    protected Coroutine _lookAtRandomPointCoroutine;
+    protected Coroutine _waitCoroutine;
+    #endregion
+
+    #region Persistent State Properties
+    protected bool _hasAtLeastOnePersistentStateProperty;
+    protected bool _isAlwaysLookingAtPlayer;
+    protected bool _isAlwaysRotatingTowardPlayer;
+    protected bool _isAlwaysChasingPlayer;
+    protected bool _isAlwaysAttackingAtPlayer;
+    protected bool _shouldInterruptCurrentStateOnAttackRangeEnter;
+    protected bool _shouldInterruptCurrentStateOnDetectRangeEnter;
     #endregion
 
     protected virtual void Awake()
@@ -41,26 +64,111 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         _playerDetectionRange = _enemyTankData.PlayerDetectionRange;
         _attackRange = _enemyTankData.AttackRange;
         _leadShotFactorInUnits = _enemyTankData.LeadShotFactorInUnits;
-        GetPlayerTransform();
+        _minimumHeadRotationAngle = _enemyTankData.MinimumRandomHeadRotationAngle;
+        _stateChangeCooldown = _enemyTankData.StateChangeCooldownInSeconds;
+        _minimumWaitTime = _enemyTankData.MinimumWaitTimeInSeconds;
+        _maximumWaitTime = _enemyTankData.MaximumWaitTimeInSeconds;
+        _isAlwaysLookingAtPlayer = _enemyTankData.IsAlwaysLookingAtPlayer;
+        _isAlwaysRotatingTowardPlayer = _enemyTankData.IsAlwaysRotatingTowardPlayer;
+        _isAlwaysChasingPlayer = _enemyTankData.IsAlwaysChasingPlayer;
+        _isAlwaysAttackingAtPlayer = _enemyTankData.IsAlwaysAttackingAtPlayer;
+        _shouldInterruptCurrentStateOnAttackRangeEnter = _enemyTankData.ShouldInterruptCurrentStateOnAttackRangeEnter;
+        _shouldInterruptCurrentStateOnDetectRangeEnter = _enemyTankData.ShouldInterruptCurrentStateOnDetectRangeEnter;
+        FindPlayerTransformInScene();
+    }
+
+    void Start()
+    {
+        _currentState = EnemyState.Patrol;
+        _lastTimeChangedState = -100;
+
+        if (_lookAtRandomPointCoroutine != null) StopCoroutine(_lookAtRandomPointCoroutine);
+        if (_waitCoroutine != null) StopCoroutine(_waitCoroutine);
     }
 
     protected virtual void Update()
     {
-        _playerPosition = GetPlayerPositionInWorld();
+        _playerPosition = PlayerPosition;
         HandleStateLogic();
+
+        if (HasAtLeastOnePersistentStateProperty)
+            HandlePersistentStateBehaviors();
     }
 
-    public abstract void HandleStateLogic();
+    #region Base State Machine
+    public virtual void HandleStateLogic()
+    {
+        if (IsInterrupted)
+        {
+            HandleInterrupt();
+            return;
+        }
+        
+        if (IsBusy || IsOnStateChangeCooldown) return;
+
+        if (_currentState == EnemyState.Patrol)
+            Patrol();
+        else if (_currentState == EnemyState.Chase)
+            Chase();
+        else if (_currentState == EnemyState.Attack)
+            Attack();
+        else if (_currentState == EnemyState.Wait)
+            Wait();
+        
+        TransitionStates();
+    }
+
+    protected virtual void HandleInterrupt()
+    {
+        if (_shouldInterruptCurrentStateOnDetectRangeEnter && IsPlayerInDetectionRange)
+            Chase();
+        else if (_shouldInterruptCurrentStateOnAttackRangeEnter && IsPlayerInAttackRange)
+            Attack();
+
+        TransitionStates();
+    }
+
     public abstract void TransitionStates();
-    public virtual void Patrol() { }
+
+    public virtual void Patrol()
+    {
+        if (_lookAtRandomPointCoroutine != null)
+            StopCoroutine(_lookAtRandomPointCoroutine);
+
+        _lookAtRandomPointCoroutine = StartCoroutine(LookAtRandomPoint());
+    }
+
     public virtual void Chase()
     {
         _tankMovement.RotateToPosition(_playerPosition);
         _tankMovement.MoveForward();
     }
+
     public virtual void Attack() => _tankShoot.Shoot();
 
-    protected virtual void GetPlayerTransform()
+    public virtual void Wait()
+    {
+        if (_waitCoroutine != null)
+            StopCoroutine(_waitCoroutine);
+
+        _waitCoroutine = StartCoroutine(WaitForRandomTime());
+    }
+
+    private void HandlePersistentStateBehaviors()
+    {
+        if (_isAlwaysAttackingAtPlayer)
+            Attack();
+        else if (_isAlwaysChasingPlayer)
+            Chase();
+        else if (_isAlwaysLookingAtPlayer)
+            LookAtPlayer();
+        else if (_isAlwaysRotatingTowardPlayer)
+            _tankMovement.RotateToPosition(PlayerPosition);
+    }
+    #endregion
+
+    #region Getters
+    protected virtual void FindPlayerTransformInScene()
     {
         if (_playerTransform != null)
             return;
@@ -73,14 +181,57 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
             this.enabled = false;
     }
 
-    public virtual Vector3 GetPlayerPositionInWorld()
+    public virtual Vector3 PlayerPosition
     {
-        if (_playerTransform == null)
-            GetPlayerTransform();
-        _playerPosition = _playerTransform.position;
-        return _playerPosition;
+        get
+        {
+            if (_playerTransform == null)
+                FindPlayerTransformInScene();
+            _playerPosition = _playerTransform.position;
+            return _playerPosition;
+        }
     }
 
+    protected bool IsPlayerInAttackRange
+    {
+        get
+        {
+            if (_transform == null || _playerPosition == null)
+                return false;
+            return Vector3.Distance(_transform.position, _playerPosition) < _attackRange;
+        }
+    }
+
+    protected bool IsPlayerInDetectionRange
+    {
+        get
+        {
+            if (_transform == null || _playerPosition == null)
+                return false;
+            return Vector3.Distance(_transform.position, _playerPosition) < _playerDetectionRange;
+        }
+    }
+
+    protected bool IsOnStateChangeCooldown => Time.time < _lastTimeChangedState + _stateChangeCooldown;
+    protected bool IsBusy => _isPatrolling || _isWaiting;
+    protected bool IsInterrupted => _shouldInterruptCurrentStateOnDetectRangeEnter
+                                    && IsPlayerInDetectionRange
+                                    || _shouldInterruptCurrentStateOnAttackRangeEnter
+                                    && IsPlayerInAttackRange;
+    public bool HasAtLeastOnePersistentStateProperty
+    {
+        get
+        {
+            return _isAlwaysLookingAtPlayer
+                || _isAlwaysRotatingTowardPlayer
+                || _isAlwaysChasingPlayer
+                || _isAlwaysAttackingAtPlayer;
+        }
+    }
+
+    #endregion
+
+    #region Look at Player
     public virtual void LookAtPlayer()
     {
         if (_playerPosition == null)
@@ -89,7 +240,35 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         _tankHead.LookAtPoint(_playerPosition);
     }
 
-    public virtual void LookAtPredictedPlayerPosition()
+    IEnumerator LookAtRandomPoint()
+    {
+        _isPatrolling = true;
+        bool isLookingAtRandomPoint = false;
+
+        Vector3 randomPoint = _tankHead.GetRandomRelativePoint(_minimumHeadRotationAngle);
+        while (!isLookingAtRandomPoint)
+        {
+            _tankHead.LookAtPoint(randomPoint, relative: true);
+            isLookingAtRandomPoint = _tankHead.IsLookingAtPoint(randomPoint, relative: true);
+            yield return null;
+        }
+        
+        yield return StartCoroutine(WaitForRandomTime());
+        
+        _isPatrolling = false;
+        _lastTimeChangedState = Time.time;
+    }
+
+    #endregion
+
+    #region Attacking
+    protected Vector3 GetPredictedPlayerPosition()
+    {
+        Vector3 playerVelocity = _playerRigidbody.velocity;
+        return _playerPosition + (playerVelocity * _leadShotFactorInUnits);
+    }
+
+    protected virtual void LookAtPredictedPlayerPosition()
     {
         if (_leadShotFactorInUnits == 0)
             return;
@@ -99,9 +278,9 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
             _tankHead.LookAtPoint(predictedPlayerPosition);
     }
 
-    public virtual void LeadShotAndLookAtPlayer()
+    protected virtual void LeadShotAndLookAtPlayer()
     {
-        if (!IsPlayerInAttackRange())
+        if (!IsPlayerInAttackRange)
             LookAtPredictedPlayerPosition();
         else
         {
@@ -109,26 +288,28 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         }
     }
 
-    private Vector3 GetPredictedPlayerPosition()
+    protected virtual void AttackIfWithinAngleThreshold(float angleThreshold)
     {
-        Vector3 playerVelocity = _playerRigidbody.velocity;
-        return _playerPosition + (playerVelocity * _leadShotFactorInUnits);
+        Vector3 playerDirection = PlayerPosition - transform.position;
+        bool withinAngleThreshold = _tankHead.IsAngleBetweenVectorsBelowThreshold(_tankHead.transform.forward,
+            playerDirection.normalized,
+            angleThreshold);
+
+        if (withinAngleThreshold)
+            _tankShoot.Shoot();
     }
 
-    protected bool IsPlayerInDetectionRange()
+    #endregion
+    #region Wait
+    protected IEnumerator WaitForRandomTime()
     {
-        if (_transform == null || _playerPosition == null)
-            return false;
-        return Vector3.Distance(_transform.position, _playerPosition) < _playerDetectionRange;
+        _isWaiting = true;
+        float waitTimeInSeconds = Random.Range(_minimumWaitTime, _maximumWaitTime);
+        yield return new WaitForSeconds(waitTimeInSeconds);
+        _isWaiting = false;
     }
 
-    protected bool IsPlayerInAttackRange()
-    {
-        if (_transform == null || _playerPosition == null)
-            return false;
-        return Vector3.Distance(_transform.position, _playerPosition) < _attackRange;
-    }
-
+    #endregion
     protected virtual void OnDrawGizmosSelected()
     {
         if (_transform == null || _enemyTankData == null)
@@ -149,5 +330,6 @@ public enum EnemyState
 {
     Patrol,
     Chase,
-    Attack
+    Attack,
+    Wait
 }
