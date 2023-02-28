@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     const string ENEMY_TAG = "Enemy";
     const string BULLET_TAG = "Bullet";
     const string WALL_TAG = "Wall";
+    const string RAMP_TAG = "Ramp";
     
     public TankData tankData;
     Rigidbody _rigidbody;
@@ -75,6 +76,9 @@ public class Bullet : MonoBehaviour
             DestroyBullet(collision.gameObject);
             DestroyBullet(gameObject);
         }
+
+        if (collision.gameObject.CompareTag(RAMP_TAG))
+            DestroyBullet(gameObject);
     }
 
     void Ricochet(Collision collision)

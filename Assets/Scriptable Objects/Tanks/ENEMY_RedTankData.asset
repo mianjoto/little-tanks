@@ -25,11 +25,12 @@ MonoBehaviour:
   BulletDamage: 1
   NumberOfRicochets: 2
   MovementSpeed: 1.4
-  BodyRotateSpeed: 3
-  HeadRotationDamping: 10
+  BodyRotateSpeed: 1
+  HeadRotationDamping: 7
   HeadFollowsCursor: 0
+  StateChangeCooldownInSeconds: 0.3
   PlayerDetectionRange: 10
-  AttackRange: 5
+  AttackRange: 6
   LeadShotFactorInUnits: 2
   IsAlwaysLookingAtPlayer: 1
   IsAlwaysRotatingTowardPlayer: 1

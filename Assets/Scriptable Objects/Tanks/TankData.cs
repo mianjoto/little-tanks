@@ -24,7 +24,13 @@ public class TankData : ScriptableObject
     #region Movement Stats
     public float MovementSpeed = 1f;
     public float BodyRotateSpeed = 1f;
-    public float HeadRotationDamping = 10f;
+    #endregion
+
+    #region Head Rotation Stats
     public bool HeadFollowsCursor = false;
+    public bool RotatesHeadSmoothly = true;
+    public float HeadRotationDamping = 10f;
+    public float HeadRotationSpeed = 10;
+    public byte LookAtAngleThresholdInDegrees = 20;
     #endregion
 }

@@ -4,12 +4,16 @@ using UnityEngine;
 public class EnemyTankData : TankData
 {
     #region Enemy State Stats
-        public float PlayerDetectionRange = 10f;
-        public float AttackRange = 5f;
-        public float LeadShotFactorInUnits = 3f;
-        public bool IsAlwaysLookingAtPlayer = false;
-        public bool IsAlwaysRotatingTowardPlayer = false;
-        public bool IsAlwaysChasingPlayer = false;
-        public bool IsAlwaysAttackingAtPlayer = false;
+    public float StateChangeCooldownInSeconds = 1;
+    public float MinimumWaitTimeInSeconds = 1f;
+    public float MaximumWaitTimeInSeconds = 3f;
+    public float MinimumRandomHeadRotationAngle = 60f;
+    public float PlayerDetectionRange = 10f;
+    public float AttackRange = 5f;
+    public float LeadShotFactorInUnits = 3f;
+    public bool IsAlwaysLookingAtPlayer = false;
+    public bool IsAlwaysRotatingTowardPlayer = false;
+    public bool IsAlwaysChasingPlayer = false;
+    public bool IsAlwaysAttackingAtPlayer = false;
     #endregion
 }
