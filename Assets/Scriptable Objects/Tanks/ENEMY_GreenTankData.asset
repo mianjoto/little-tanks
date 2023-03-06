@@ -25,7 +25,7 @@ MonoBehaviour:
   BulletDamage: 1
   NumberOfRicochets: 3
   MovementSpeed: 0
-  BodyRotateSpeed: 4
+  BodyRotateSpeed: 1
   HeadFollowsCursor: 0
   RotatesHeadSmoothly: 1
   HeadRotationDamping: 1.2
@@ -44,3 +44,4 @@ MonoBehaviour:
   IsAlwaysRotatingTowardPlayer: 0
   IsAlwaysChasingPlayer: 0
   IsAlwaysAttackingAtPlayer: 0
+  ShouldBodyRotateTowardHeadDirection: 1

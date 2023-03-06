@@ -50,6 +50,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     protected bool _isAlwaysAttackingAtPlayer;
     protected bool _shouldInterruptCurrentStateOnAttackRangeEnter;
     protected bool _shouldInterruptCurrentStateOnDetectRangeEnter;
+    protected bool _shouldBodyRotateTowardHeadDirection;
     #endregion
 
     protected virtual void Awake()
@@ -74,6 +75,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         _isAlwaysAttackingAtPlayer = _enemyTankData.IsAlwaysAttackingAtPlayer;
         _shouldInterruptCurrentStateOnAttackRangeEnter = _enemyTankData.ShouldInterruptCurrentStateOnAttackRangeEnter;
         _shouldInterruptCurrentStateOnDetectRangeEnter = _enemyTankData.ShouldInterruptCurrentStateOnDetectRangeEnter;
+        _shouldBodyRotateTowardHeadDirection = _enemyTankData.ShouldBodyRotateTowardHeadDirection;
         FindPlayerTransformInScene();
     }
 
@@ -140,7 +142,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
 
     public virtual void Chase()
     {
-        _tankMovement.RotateToPosition(_playerPosition);
+        _tankMovement.RotateBodyToPosition(_playerPosition);
         _tankMovement.MoveForward();
     }
 
@@ -163,7 +165,13 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         else if (_isAlwaysLookingAtPlayer)
             LookAtPlayer();
         else if (_isAlwaysRotatingTowardPlayer)
-            _tankMovement.RotateToPosition(PlayerPosition);
+            _tankMovement.RotateBodyToPosition(_playerPosition);
+        else if (_shouldBodyRotateTowardHeadDirection)
+        {
+            var direction = _transform.position - _playerPosition;
+            _tankMovement.RotateBodyToPosition(direction);
+            print($"direction={direction}");
+        }
     }
     #endregion
 
@@ -225,7 +233,8 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
             return _isAlwaysLookingAtPlayer
                 || _isAlwaysRotatingTowardPlayer
                 || _isAlwaysChasingPlayer
-                || _isAlwaysAttackingAtPlayer;
+                || _isAlwaysAttackingAtPlayer
+                || _shouldBodyRotateTowardHeadDirection;
         }
     }
 
@@ -252,7 +261,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
             isLookingAtRandomPoint = _tankHead.IsLookingAtPoint(randomPoint, relative: true);
             yield return null;
         }
-        
+
         yield return StartCoroutine(WaitForRandomTime());
         
         _isPatrolling = false;
@@ -290,7 +299,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
 
     protected virtual void AttackIfWithinAngleThreshold(float angleThreshold)
     {
-        Vector3 playerDirection = PlayerPosition - transform.position;
+        Vector3 playerDirection = _playerPosition - transform.position;
         bool withinAngleThreshold = _tankHead.IsAngleBetweenVectorsBelowThreshold(_tankHead.transform.forward,
             playerDirection.normalized,
             angleThreshold);
@@ -323,6 +332,11 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         Gizmos.color = Color.green;
         var predictedPlayerPosition = GetPredictedPlayerPosition();
         Gizmos.DrawWireSphere(predictedPlayerPosition, 0.5f);
+
+        if (_tankHead != null)
+        {
+            Gizmos.DrawRay(transform.position, _tankHead.transform.forward*15);
+        }
     }
 }
 

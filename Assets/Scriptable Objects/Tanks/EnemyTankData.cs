@@ -17,5 +17,6 @@ public class EnemyTankData : TankData
     public bool IsAlwaysRotatingTowardPlayer = false;
     public bool IsAlwaysChasingPlayer = false;
     public bool IsAlwaysAttackingAtPlayer = false;
+    public bool ShouldBodyRotateTowardHeadDirection = false;
     #endregion
 }
