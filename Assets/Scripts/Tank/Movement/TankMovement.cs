@@ -21,9 +21,14 @@ public class TankMovement : MonoBehaviour
         _bodyRotateSpeed = tankManager.TankData.BodyRotateSpeed;
     }
 
-    public void MoveForward() => _rigidbody.velocity = transform.forward * _moveSpeed;
-    public void MoveBackward() => _rigidbody.velocity = -transform.forward * _moveSpeed;
-    public void RotateCounterClockwise() => _transform.Rotate(Vector3.up, _headRotateSpeed * -90 * Time.deltaTime);
-    public void RotateClockwise() => _transform.Rotate(Vector3.up, _headRotateSpeed * 90 * Time.deltaTime);
-    public void RotateBodyToPosition(Vector3 position) => _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(_transform.position - position), Time.deltaTime * _bodyRotateSpeed);
+    public void MoveBodyForward() => _rigidbody.velocity = transform.forward * _moveSpeed;
+    public void MoveBodyBackward() => _rigidbody.velocity = -transform.forward * _moveSpeed;
+    public void RotateBodyClockwise() => _transform.Rotate(Vector3.up, _bodyRotateSpeed * 90 * Time.deltaTime);
+    public void RotateBodyCounterClockwise() => _transform.Rotate(Vector3.up, _bodyRotateSpeed * -90 * Time.deltaTime);
+    public void RotateBodyToPosition(Vector3 position)
+    {
+        Vector3 direction = position - _transform.position;
+        float angleToPosition = Quaternion.LookRotation(direction).eulerAngles.y;
+        _transform.Rotate(Vector3.up, _bodyRotateSpeed * angleToPosition * Time.deltaTime);
+    } 
 }

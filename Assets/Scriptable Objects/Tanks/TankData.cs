@@ -4,12 +4,14 @@ using UnityEngine;
 public class TankData : ScriptableObject
 {
     #region Tank Stats
+    [Header("GameObject Properties")]
     public string TankName = "Tank";
     public string TankTag = "Tank";
     public byte StartingHealth = 3;
     #endregion
 
     #region Shooting Stats
+    [Header("Shooting Properties")]
     public GameObject BulletPrefab;
     public float BulletSpeedInUnitsPerSecond = 1f;
     public byte MaxBulletsInReserve = 4;
@@ -22,15 +24,17 @@ public class TankData : ScriptableObject
     #endregion
 
     #region Movement Stats
+    [Header("Movement Settings")]
     public float MovementSpeed = 1f;
     public float BodyRotateSpeed = 1f;
+    public float HeadRotationSpeed = 10;
     #endregion
 
     #region Head Rotation Stats
+    [Header("Head Movement Settings")]
     public bool HeadFollowsCursor = false;
     public bool RotatesHeadSmoothly = true;
     public float HeadRotationDamping = 10f;
-    public float HeadRotationSpeed = 10;
     public byte LookAtAngleThresholdInDegrees = 20;
     #endregion
 }

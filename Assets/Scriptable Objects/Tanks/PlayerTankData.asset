@@ -26,5 +26,8 @@ MonoBehaviour:
   NumberOfRicochets: 1
   MovementSpeed: 1.6
   BodyRotateSpeed: 1
-  HeadRotationDamping: 10
+  HeadRotationSpeed: 180
   HeadFollowsCursor: 1
+  RotatesHeadSmoothly: 0
+  HeadRotationDamping: 10
+  LookAtAngleThresholdInDegrees: 20

@@ -143,7 +143,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     public virtual void Chase()
     {
         _tankMovement.RotateBodyToPosition(_playerPosition);
-        _tankMovement.MoveForward();
+        _tankMovement.MoveBodyForward();
     }
 
     public virtual void Attack() => _tankShoot.Shoot();
