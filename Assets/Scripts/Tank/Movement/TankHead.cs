@@ -13,9 +13,6 @@ public class TankHead : MonoBehaviour
     byte _lookAtAngleThreshold;
     float _headRotationSpeed;
 
-    const float LOCKED_X_ROTATION = 0;
-    const float LOCKED_Z_ROTATION = 0;
-
     void Awake()
     {
         _rotationDamping = tankManager.TankData.HeadRotationDamping;
@@ -40,10 +37,7 @@ public class TankHead : MonoBehaviour
         if (relative)
             targetPosition = transform.position + position;
 
-        Quaternion rotation = Quaternion.LookRotation(targetPosition - transform.position, Vector3.up);
-
-        rotation.x = LOCKED_X_ROTATION;
-        rotation.z = LOCKED_Z_ROTATION;
+        Quaternion rotation = Quaternion.LookRotation(targetPosition - transform.position, Vector3.up).RestrictToYAxis();
 
         if (_rotatesHeadSmoothly)
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, _rotationDamping * Time.deltaTime);
