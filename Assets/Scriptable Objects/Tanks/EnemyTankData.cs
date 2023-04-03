@@ -11,9 +11,12 @@ public class EnemyTankData : TankData
     public float PlayerDetectionRange = 10f;
     public float AttackRange = 5f;
     public float LeadShotFactorInUnits = 3f;
+    public bool ShouldInterruptCurrentStateOnDetectRangeEnter = false;
+    public bool ShouldInterruptCurrentStateOnAttackRangeEnter = false;
     public bool IsAlwaysLookingAtPlayer = false;
     public bool IsAlwaysRotatingTowardPlayer = false;
     public bool IsAlwaysChasingPlayer = false;
     public bool IsAlwaysAttackingAtPlayer = false;
+    public bool ShouldBodyRotateTowardHeadDirection = false;
     #endregion
 }

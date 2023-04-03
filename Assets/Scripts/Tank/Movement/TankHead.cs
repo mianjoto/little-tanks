@@ -68,7 +68,7 @@ public class TankHead : MonoBehaviour
         return relativeRandomPoint;
     }
 
-    bool IsAngleBetweenVectorsBelowThreshold(Vector3 point1, Vector3 point2, float angleThresholdInDegrees = 0)
+    public bool IsAngleBetweenVectorsBelowThreshold(Vector3 point1, Vector3 point2, float angleThresholdInDegrees = 0)
     {
         float angle = Vector3.Angle(point1, point2);
         return angle < angleThresholdInDegrees;

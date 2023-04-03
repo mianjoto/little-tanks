@@ -25,20 +25,20 @@ public class PlayerManager : MonoBehaviour
     void ListenForInput()
     {
         _isListeningForInput = true;
-        inputListener.OnMovingForward += _tankMovement.MoveForward;
-        inputListener.OnMovingBackward += _tankMovement.MoveBackward;
-        inputListener.OnRotatingClockwise += _tankMovement.RotateClockwise;
-        inputListener.OnRotatingCounterClockwise += _tankMovement.RotateCounterClockwise;
+        inputListener.OnMovingForward += _tankMovement.MoveBodyForward;
+        inputListener.OnMovingBackward += _tankMovement.MoveBodyBackward;
+        inputListener.OnRotatingClockwise += _tankMovement.RotateBodyClockwise;
+        inputListener.OnRotatingCounterClockwise += _tankMovement.RotateBodyCounterClockwise;
         inputListener.OnShootKey += _tankShoot.Shoot;
     }
 
     void StopListeningForInput()
     {
         _isListeningForInput = false;
-        inputListener.OnMovingForward -= _tankMovement.MoveForward;
-        inputListener.OnMovingBackward -= _tankMovement.MoveBackward;
-        inputListener.OnRotatingClockwise -= _tankMovement.RotateClockwise;
-        inputListener.OnRotatingCounterClockwise -= _tankMovement.RotateCounterClockwise;
+        inputListener.OnMovingForward -= _tankMovement.MoveBodyForward;
+        inputListener.OnMovingBackward -= _tankMovement.MoveBodyBackward;
+        inputListener.OnRotatingClockwise -= _tankMovement.RotateBodyClockwise;
+        inputListener.OnRotatingCounterClockwise -= _tankMovement.RotateBodyCounterClockwise;
         inputListener.OnShootKey -= _tankShoot.Shoot;
     }
     

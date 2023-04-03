@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdb81e43e7bb6fd408c6355c54e17b20, type: 3}
+  m_Name: ENEMY_GreenTankData
+  m_EditorClassIdentifier: 
+  TankName: GreenTank
+  TankTag: Enemy
+  StartingHealth: 1
+  BulletPrefab: {fileID: 7377736342347359843, guid: f7c01f3edffc446488b8dc536d4b7dcb, type: 3}
+  BulletSpeedInUnitsPerSecond: 1.25
+  MaxBulletsInReserve: 1
+  ShootDelayInSeconds: 5
+  ReloadAfterShootingDelayInSeconds: 1
+  PerBulletReloadTimeInSeconds: 1
+  BulletLifeTimeInSeconds: 10
+  BulletDamage: 1
+  NumberOfRicochets: 3
+  MovementSpeed: 0
+  BodyRotateSpeed: 1
+  HeadFollowsCursor: 0
+  RotatesHeadSmoothly: 1
+  HeadRotationDamping: 1.2
+  HeadRotationSpeed: 10
+  LookAtAngleThresholdInDegrees: 20
+  StateChangeCooldownInSeconds: 0.5
+  MinimumWaitTimeInSeconds: 2
+  MaximumWaitTimeInSeconds: 4
+  MinimumRandomHeadRotationAngle: 30
+  PlayerDetectionRange: 10
+  AttackRange: 12
+  LeadShotFactorInUnits: 3
+  ShouldInterruptCurrentStateOnDetectRangeEnter: 0
+  ShouldInterruptCurrentStateOnAttackRangeEnter: 1
+  IsAlwaysLookingAtPlayer: 0
+  IsAlwaysRotatingTowardPlayer: 0
+  IsAlwaysChasingPlayer: 0
+  IsAlwaysAttackingAtPlayer: 0
+  ShouldBodyRotateTowardHeadDirection: 1
