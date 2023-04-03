@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tankManager: {fileID: 5849089791198044373}
-  bodyTransform: {fileID: 0}
+  bodyTransform: {fileID: 2281462844560808596}
 --- !u!114 &5849089790491195286
 MonoBehaviour:
   m_ObjectHideFlags: 0
