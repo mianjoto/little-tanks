@@ -142,8 +142,8 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
 
     public virtual void Chase()
     {
-        _tankMovement.RotateBodyToPosition(_playerPosition);
-        _tankMovement.MoveBodyForward();
+        _tankMovement.RotateTankToPosition(_playerPosition);
+        _tankMovement.MoveTankForward();
     }
 
     public virtual void Attack() => _tankShoot.Shoot();
@@ -165,12 +165,10 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         else if (_isAlwaysLookingAtPlayer)
             LookAtPlayer();
         else if (_isAlwaysRotatingTowardPlayer)
-            _tankMovement.RotateBodyToPosition(_playerPosition);
+            _tankMovement.RotateTankToPosition(_playerPosition);
         else if (_shouldBodyRotateTowardHeadDirection)
         {
-            var direction = _transform.position - _playerPosition;
-            _tankMovement.RotateBodyToPosition(direction);
-            print($"direction={direction}");
+            _tankMovement.RotateBodyAlongHead();
         }
     }
     #endregion

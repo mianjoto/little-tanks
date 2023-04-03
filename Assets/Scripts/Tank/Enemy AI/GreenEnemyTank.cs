@@ -1,6 +1,5 @@
 public class GreenEnemyTank : BaseEnemyStateMachine
 {
-    const float ANGLE_AIM_THRESHOLD_IN_DEGREES = 30;
 
     // Green tanks track player when in range, otherwise look randomly
     public override void TransitionStates()
@@ -17,6 +16,6 @@ public class GreenEnemyTank : BaseEnemyStateMachine
     public override void Attack()
     {
         LookAtPlayer();
-        AttackIfWithinAngleThreshold(ANGLE_AIM_THRESHOLD_IN_DEGREES);
+        AttackIfWithinAngleThreshold(_enemyTankData.LookAtAngleThresholdInDegrees);
     }
 }
