@@ -84,6 +84,16 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         FindPlayerTransformInScene();
     }
 
+    void OnEnable()
+    {
+        _tankManager.OnTankDeath += () => OnEnemyDeath?.Invoke();    
+    }
+
+    void OnDisable()
+    {
+        _tankManager.OnTankDeath -= () => OnEnemyDeath?.Invoke();
+    }
+
     void Start()
     {
         _currentState = EnemyState.Patrol;
@@ -185,6 +195,9 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
             return;
 
         var player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
+        if (player == null)
+            return;    
+
         _playerTransform = player.transform;
         _playerRigidbody = player.GetComponent<Rigidbody>();
 
@@ -198,6 +211,10 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         {
             if (_playerTransform == null)
                 FindPlayerTransformInScene();
+            
+            if (_playerTransform == null)
+                return Vector3.zero;
+            
             _playerPosition = _playerTransform.position;
             return _playerPosition;
         }
@@ -276,6 +293,8 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     #region Attacking
     protected Vector3 GetPredictedPlayerPosition()
     {
+        if (_playerRigidbody == null)
+            return Vector3.zero;
         Vector3 playerVelocity = _playerRigidbody.velocity;
         return _playerPosition + (playerVelocity * _leadShotFactorInUnits);
     }

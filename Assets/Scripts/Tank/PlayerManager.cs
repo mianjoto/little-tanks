@@ -6,20 +6,32 @@ using UnityEngine;
 [RequireComponent(typeof(TankMovement), typeof(TankShoot))]
 public class PlayerManager : MonoBehaviour
 {
+    TankManager _tankManager;
     TankMovement _tankMovement;
     TankShoot _tankShoot;
 
     bool _isListeningForInput;
 
+    public static Action OnPlayerDeath;
+
     void Awake()
     {
+        _tankManager = GetComponent<TankManager>();
         _tankMovement = GetComponent<TankMovement>();
         _tankShoot = GetComponent<TankShoot>();
     }
 
-    void OnEnable() => ListenForInput();
-    void OnDisable() => StopListeningForInput();
+    void OnEnable()
+    {
+        ListenForInput();
+        _tankManager.OnTankDeath += () => OnPlayerDeath?.Invoke();
+    }
 
+    void OnDisable()
+    {
+        StopListeningForInput();
+        _tankManager.OnTankDeath -= () => OnPlayerDeath?.Invoke();
+    }
 
     void ListenForInput()
     {

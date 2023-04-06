@@ -62,14 +62,15 @@ public class LevelManager : MonoBehaviour
 
     void ProceedLevel()
     {
-        SceneLoader.Instance.LoadScene(NextLevel);
         CurrentLevel = NextLevel;
         NextLevel = GetNextLevel();
 
         if (NextLevel == GAME_COMPLETE_LEVEL)
-            Debug.Log("Game Over");
+            SceneLoader.Instance.LoadGameComplete();
         else
-            Debug.Log("Proceeding to Level " + NextLevel);
+            Debug.Log("Proceeding to Level " + CurrentLevel);
+        
+        SceneLoader.Instance.LoadLevel(CurrentLevel);
     }
     
 }

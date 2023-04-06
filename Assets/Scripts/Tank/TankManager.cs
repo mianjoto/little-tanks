@@ -9,10 +9,9 @@ public class TankManager : MonoBehaviour
     public byte Health;
     #endregion
 
-    #region Events
-    public static Action OnPlayerDeath;
+    #region Instance Events
+    public Action OnTankDeath;
     #endregion
-
     void Awake()
     {
         if (TankHead == null)
@@ -35,7 +34,8 @@ public class TankManager : MonoBehaviour
 
     void Die()
     {
-        // TODO: Add particle effect
-        OnPlayerDeath?.Invoke();
+        // TODO: Add particle effect for any tank death
+        OnTankDeath?.Invoke();
+        Destroy(gameObject);
     }
 }

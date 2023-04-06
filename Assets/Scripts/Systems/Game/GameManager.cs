@@ -27,13 +27,13 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         BaseEnemyStateMachine.OnEnemyDeath += UpdateEnemyCount;
-        TankManager.OnPlayerDeath += HandlePlayerDeath;
+        PlayerManager.OnPlayerDeath += HandlePlayerDeath;
     }
 
     void OnDisable()
     {
         BaseEnemyStateMachine.OnEnemyDeath -= UpdateEnemyCount;
-        TankManager.OnPlayerDeath -= HandlePlayerDeath;
+        PlayerManager.OnPlayerDeath -= HandlePlayerDeath;
     }
 
     void Start()
@@ -45,15 +45,12 @@ public class GameManager : MonoBehaviour
     {
         if (Player == null)
             Player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
-        Debug.Log("GameManager: Player=" + Player);
 
         if (NumberOfLivesRemaining == 0)
             NumberOfLivesRemaining = MAX_NUMBER_OF_LIVES;
-        Debug.Log("GameManager: NumberOfLivesRemaining=" + NumberOfLivesRemaining);
 
         NumberOfEnemiesRemaining = LevelManager.Instance.GetNumberOfEnemiesInLevel();
         Player.transform.position = LevelManager.Instance.PlayerSpawnPoint.position;
-        Debug.Log("GameManager: Loaded in Level" + LevelManager.Instance.CurrentLevel);
     }
 
     void UpdateEnemyCount()
@@ -68,10 +65,12 @@ public class GameManager : MonoBehaviour
     {
         // Just for testing :)
         NumberOfLivesRemaining--;
+        Debug.Log("Player died :(");
+        Debug.Log("Number of lives remaining: " + NumberOfLivesRemaining);
 
         if (NumberOfLivesRemaining == 0)
             SceneLoader.Instance.LoadGameOver();
         else
-            SceneLoader.Instance.LoadScene(LevelManager.Instance.CurrentLevel);
+            SceneLoader.Instance.LoadLevel(LevelManager.Instance.CurrentLevel);
     }
 }

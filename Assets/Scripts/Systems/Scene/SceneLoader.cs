@@ -15,11 +15,6 @@ namespace mianjoto.Scene
 
         const string LEVEL_SCENE_PREFIX = "Level";
 
-        public void LoadScene(int levelNumber)
-        {
-            SceneManager.LoadSceneAsync(LEVEL_SCENE_PREFIX + levelNumber);
-        }
-
         public void LoadMainMenu()
         {
             SceneManager.LoadScene(Scenes.MainMenu.ToString());
@@ -35,15 +30,15 @@ namespace mianjoto.Scene
             SceneManager.LoadScene(Scenes.GameComplete.ToString());
         }
 
-        public void LoadNextLevel(int currentLevelNumber)
-        {
-            LoadNextLevel(currentLevelNumber + 1);
-        }
-
         public void LoadScene(Scenes scene)
         {
             if (SceneManager.GetActiveScene().name != scene.ToString())
                 SceneManager.LoadScene(scene.ToString());
+        }
+
+        public void LoadLevel(int levelNumber)
+        {
+            SceneManager.LoadScene(LEVEL_SCENE_PREFIX + levelNumber.ToString());
         }
     }
 }
