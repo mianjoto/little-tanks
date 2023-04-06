@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6378719516914132254}
   - component: {fileID: 8336134725363349097}
   m_Layer: 6
-  m_Name: Brick_2x2_PLYWOOD_KNOTTY
+  m_Name: Brick_1x1_PLYWOOD_STREAKY
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3874897393328859303}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.11, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: af187e35464269744885d704119833c1, type: 2}
+  - {fileID: 2100000, guid: 7962120b31ccb9f45a8c804244a775bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
