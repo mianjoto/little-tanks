@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6378719516914132254}
   - component: {fileID: 8336134725363349097}
   m_Layer: 6
-  m_Name: Brick_2x2_PLYWOOD_KNOTTY
+  m_Name: Brick_2x2_PLASTIC_YELLOW
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: af187e35464269744885d704119833c1, type: 2}
+  - {fileID: 2100000, guid: a1be7bd75d910ad48ac08e2d35c3d79b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6103063033796858248}
   m_Layer: 6
   m_Name: Brick_2x1_PLYWOOD_STREAKY
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
