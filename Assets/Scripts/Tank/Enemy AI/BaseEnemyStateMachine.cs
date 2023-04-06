@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +9,10 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     protected TankManager _tankManager;
     protected TankShoot _tankShoot;
     protected TankMovement _tankMovement;
+    #endregion
+
+    #region Events
+    public static Action OnEnemyDeath;
     #endregion
 
     #region Cached Components
@@ -311,7 +316,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     protected IEnumerator WaitForRandomTime()
     {
         _isWaiting = true;
-        float waitTimeInSeconds = Random.Range(_minimumWaitTime, _maximumWaitTime);
+        float waitTimeInSeconds = UnityEngine.Random.Range(_minimumWaitTime, _maximumWaitTime);
         yield return new WaitForSeconds(waitTimeInSeconds);
         _isWaiting = false;
     }

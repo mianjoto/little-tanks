@@ -6,7 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(TankMovement), typeof(TankShoot))]
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] InputListener inputListener;
     TankMovement _tankMovement;
     TankShoot _tankShoot;
 
@@ -25,21 +24,21 @@ public class PlayerManager : MonoBehaviour
     void ListenForInput()
     {
         _isListeningForInput = true;
-        inputListener.OnMovingForward += _tankMovement.MoveTankForward;
-        inputListener.OnMovingBackward += _tankMovement.MoveTankBackward;
-        inputListener.OnRotatingClockwise += _tankMovement.RotateTankClockwise;
-        inputListener.OnRotatingCounterClockwise += _tankMovement.RotateTankCounterClockwise;
-        inputListener.OnShootKey += _tankShoot.Shoot;
+        InputListener.OnMovingForward += _tankMovement.MoveTankForward;
+        InputListener.OnMovingBackward += _tankMovement.MoveTankBackward;
+        InputListener.OnRotatingClockwise += _tankMovement.RotateTankClockwise;
+        InputListener.OnRotatingCounterClockwise += _tankMovement.RotateTankCounterClockwise;
+        InputListener.OnShootKey += _tankShoot.Shoot;
     }
 
     void StopListeningForInput()
     {
         _isListeningForInput = false;
-        inputListener.OnMovingForward -= _tankMovement.MoveTankForward;
-        inputListener.OnMovingBackward -= _tankMovement.MoveTankBackward;
-        inputListener.OnRotatingClockwise -= _tankMovement.RotateTankClockwise;
-        inputListener.OnRotatingCounterClockwise -= _tankMovement.RotateTankCounterClockwise;
-        inputListener.OnShootKey -= _tankShoot.Shoot;
+        InputListener.OnMovingForward -= _tankMovement.MoveTankForward;
+        InputListener.OnMovingBackward -= _tankMovement.MoveTankBackward;
+        InputListener.OnRotatingClockwise -= _tankMovement.RotateTankClockwise;
+        InputListener.OnRotatingCounterClockwise -= _tankMovement.RotateTankCounterClockwise;
+        InputListener.OnShootKey -= _tankShoot.Shoot;
     }
     
     public void ToggleListeningForInput()

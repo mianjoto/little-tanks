@@ -1,10 +1,17 @@
+using System;
 using UnityEngine;
 
 public class TankManager : MonoBehaviour
 {
+    #region Components
     public TankData TankData;
     public TankHead TankHead;
     public byte Health;
+    #endregion
+
+    #region Events
+    public static Action OnPlayerDeath;
+    #endregion
 
     void Awake()
     {
@@ -29,6 +36,6 @@ public class TankManager : MonoBehaviour
     void Die()
     {
         // TODO: Add particle effect
-        Destroy(gameObject);
+        OnPlayerDeath?.Invoke();
     }
 }
