@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +9,10 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     protected TankManager _tankManager;
     protected TankShoot _tankShoot;
     protected TankMovement _tankMovement;
+    #endregion
+
+    #region Events
+    public static Action OnEnemyDeath;
     #endregion
 
     #region Cached Components
@@ -77,6 +82,16 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         _shouldInterruptCurrentStateOnDetectRangeEnter = _enemyTankData.ShouldInterruptCurrentStateOnDetectRangeEnter;
         _shouldBodyRotateTowardHeadDirection = _enemyTankData.ShouldBodyRotateTowardHeadDirection;
         FindPlayerTransformInScene();
+    }
+
+    void OnEnable()
+    {
+        _tankManager.OnTankDeath += () => OnEnemyDeath?.Invoke();    
+    }
+
+    void OnDisable()
+    {
+        _tankManager.OnTankDeath -= () => OnEnemyDeath?.Invoke();
     }
 
     void Start()
@@ -180,6 +195,9 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
             return;
 
         var player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
+        if (player == null)
+            return;    
+
         _playerTransform = player.transform;
         _playerRigidbody = player.GetComponent<Rigidbody>();
 
@@ -193,6 +211,10 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         {
             if (_playerTransform == null)
                 FindPlayerTransformInScene();
+            
+            if (_playerTransform == null)
+                return Vector3.zero;
+            
             _playerPosition = _playerTransform.position;
             return _playerPosition;
         }
@@ -271,6 +293,8 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     #region Attacking
     protected Vector3 GetPredictedPlayerPosition()
     {
+        if (_playerRigidbody == null)
+            return Vector3.zero;
         Vector3 playerVelocity = _playerRigidbody.velocity;
         return _playerPosition + (playerVelocity * _leadShotFactorInUnits);
     }
@@ -311,7 +335,7 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
     protected IEnumerator WaitForRandomTime()
     {
         _isWaiting = true;
-        float waitTimeInSeconds = Random.Range(_minimumWaitTime, _maximumWaitTime);
+        float waitTimeInSeconds = UnityEngine.Random.Range(_minimumWaitTime, _maximumWaitTime);
         yield return new WaitForSeconds(waitTimeInSeconds);
         _isWaiting = false;
     }

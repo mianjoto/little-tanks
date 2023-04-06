@@ -14,32 +14,19 @@ public class InputListener : MonoBehaviour
     #endregion
 
     #region Actions
-    public Action OnShootKey;
-    public Action OnMovingForward;
-    public Action OnMovingBackward;
-    public Action OnRotatingCounterClockwise;
-    public Action OnRotatingClockwise;
+    public static Action OnShootKey;
+    public static Action OnMovingForward;
+    public static Action OnMovingBackward;
+    public static Action OnRotatingCounterClockwise;
+    public static Action OnRotatingClockwise;
     #endregion
 
     public float HorizontalInput => Input.GetAxis("Horizontal");
     public float VerticalInput => Input.GetAxis("Vertical");
 
-    #region Singleton Pattern
-    private static InputListener instance;
-    public static InputListener Instance => instance;
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+    #region Singleton Handler
+    public static InputListener Instance { get; private set; }
+    void Awake() => Instance = this;
     #endregion
     
     void Update()

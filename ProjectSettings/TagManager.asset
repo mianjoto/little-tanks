@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - PlayerTank
   - Ramp
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX
