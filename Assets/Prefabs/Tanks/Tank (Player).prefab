@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 2076500471}
   m_Layer: 0
   m_Name: Tank (Player)
-  m_TagString: PlayerTank
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,7 +491,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4119f01579734194ebbcc057700370f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputListener: {fileID: 0}
 --- !u!114 &7692320862355608675
 MonoBehaviour:
   m_ObjectHideFlags: 0
