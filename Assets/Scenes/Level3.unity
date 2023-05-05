@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 705507994}
+  m_Sun: {fileID: 0}
   m_IndirectSpecularColor: {r: 0.8363003, g: 0.8045945, b: 0.73130316, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
@@ -2790,11 +2790,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3428570994049651711, guid: 1eff21d736df75a449f717f13cda9fb0, type: 3}
   m_PrefabInstance: {fileID: 699719072}
-  m_PrefabAsset: {fileID: 0}
---- !u!108 &705507994 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 5140793618144551196, guid: a5b86e687c702384182c623945c0c0e3, type: 3}
-  m_PrefabInstance: {fileID: 5140793618848863110}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &705832084
 PrefabInstance:

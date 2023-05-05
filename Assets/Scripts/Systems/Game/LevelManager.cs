@@ -37,6 +37,9 @@ public class LevelManager : MonoBehaviour
     
     void InitializeLevel(Scene scene, LoadSceneMode mode)
     {
+        if (!scene.name.Contains("Level"))
+            return;
+
         if (CurrentLevel == 0)
             CurrentLevel = 1;
         
@@ -54,6 +57,8 @@ public class LevelManager : MonoBehaviour
 
     public Transform GetPlayerSpawnPoint()
     {
+        var obj = GameObject.FindGameObjectWithTag(PLAYER_SPAWN_POINT_TAG);
+        Debug.Log(obj);
         return GameObject.FindGameObjectWithTag(PLAYER_SPAWN_POINT_TAG).transform;
     }
 
@@ -73,7 +78,7 @@ public class LevelManager : MonoBehaviour
         else
             Debug.Log("Proceeding to Level " + CurrentLevel);
         
-        SceneLoader.Instance.LoadLevelImmediately(CurrentLevel);
+        SceneLoader.Instance.LoadLevel(CurrentLevel);
     }
     
 }

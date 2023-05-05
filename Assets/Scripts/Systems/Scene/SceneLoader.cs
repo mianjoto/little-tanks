@@ -13,57 +13,71 @@ namespace mianjoto.Scene
         void Awake() => Instance = this;
         #endregion
 
+        [SerializeField] GameObject loadingScreen;
+        Camera loadingScreenCamera;
+        Animator loadingScreenAnimator;
+
+        Camera currentMainCamera;
+
         const string LEVEL_SCENE_PREFIX = "Level";
-        const string LOADING_SCENE_NAME = "Loading";
 
-        public IEnumerator LoadSceneWithLoadingScreen(string sceneName)
+        List<AsyncOperation> scenesLoading = new List<AsyncOperation>();
+        public IEnumerator LoadWithLoadingScreen(string sceneName)
         {
-            string oldSceneName = SceneManager.GetActiveScene().name;
-            if (SceneManager.GetActiveScene().name == sceneName)
-                yield return null;
+            Debug.Log("in loading script");
+            currentMainCamera = Camera.main;
 
-            var loadingScene = SceneManager.LoadSceneAsync(LOADING_SCENE_NAME, LoadSceneMode.Additive);
-            Camera.main.gameObject.SetActive(false);
+            yield return StartCoroutine(ShowLoadingScreen());
 
-            do
+            // Get scene references
+            var nextSceneOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            // nextSceneOperation.allowSceneActivation = false;
+            yield return nextSceneOperation;
+
+            var currentSceneOperation = SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+            // Load and unload scenes
+
+            scenesLoading.Add(currentSceneOperation);
+            scenesLoading.Add(nextSceneOperation);
+
+            // yield return StartCoroutine(GetSceneLoadProgress());
+            
+            yield return new WaitForSeconds(3f);
+            // Show new scene
+            yield return StartCoroutine(HideLoadingScreen());
+            nextSceneOperation.allowSceneActivation = true;
+
+        }
+
+        IEnumerator GetSceneLoadProgress()
+        {
+            foreach (AsyncOperation sceneOperation in scenesLoading)
             {
-                yield return null;
-            } while (!loadingScene.isDone);
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(LOADING_SCENE_NAME));
-            Animator loadingAnimator = GameObject.FindGameObjectWithTag("Loading").GetComponent<Animator>();
+                if (sceneOperation == null) continue;
 
-            var scene = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-            SceneManager.UnloadSceneAsync(oldSceneName);
-            scene.allowSceneActivation = false;
-            do
-            {
-                Debug.Log("loading progress:" + scene.progress);
-                yield return null;
-            } while (scene.progress < 0.9f);
+                while (!sceneOperation.isDone)
+                {
+                    yield return null;
+                }
+            }
 
-            Debug.Log("loading animator:" + loadingAnimator);
-            loadingAnimator.SetTrigger("SlideDown");
-            yield return new WaitForSeconds(5f);
-
-            scene.allowSceneActivation = true;
-
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
-            SceneManager.UnloadSceneAsync(LOADING_SCENE_NAME);
+            scenesLoading.Clear();
+            yield return null;
         }
 
         public void LoadSceneWithLoadingScreen(Scenes scene)
         {
-            LoadSceneWithLoadingScreen(scene.ToString());
+            LoadWithLoadingScreen(scene.ToString());
         }
 
         public void LoadLevel(int levelNumber)
         {
-            StartCoroutine(LoadSceneWithLoadingScreen(LEVEL_SCENE_PREFIX + levelNumber.ToString()));
+            StartCoroutine(LoadWithLoadingScreen(LEVEL_SCENE_PREFIX + levelNumber.ToString()));
         }
 
         public void LoadNextLevel()
         {
-            LoadSceneWithLoadingScreen(LEVEL_SCENE_PREFIX + LevelManager.Instance.NextLevel.ToString());
+            LoadWithLoadingScreen(LEVEL_SCENE_PREFIX + LevelManager.Instance.NextLevel.ToString());
         }
 
         public void LoadMainMenu()
@@ -94,6 +108,40 @@ namespace mianjoto.Scene
         public void LoadLevelImmediately(int levelNumber)
         {
             SceneManager.LoadScene(LEVEL_SCENE_PREFIX + levelNumber.ToString());
+        }
+
+        IEnumerator ShowLoadingScreen()
+        {
+            loadingScreen.gameObject.SetActive(true);
+
+            if (loadingScreenAnimator == null)
+                loadingScreenAnimator = loadingScreen.GetComponentInChildren<Animator>();
+
+            if (loadingScreenCamera == null)
+                loadingScreenCamera = loadingScreen.GetComponentInChildren<Camera>();
+
+            currentMainCamera.tag = "Untagged";
+            loadingScreenCamera.tag = "MainCamera";
+
+            yield return new WaitForSeconds(1);
+        }
+
+        IEnumerator HideLoadingScreen()
+        {
+            if (loadingScreenAnimator != null)
+            {
+                loadingScreenAnimator.SetTrigger("SlideDown");
+                yield return new WaitForSeconds(1f);
+            }
+
+            currentMainCamera = Camera.main;
+            currentMainCamera.tag = "MainCamera";
+
+            if (loadingScreenCamera != null)
+                loadingScreenCamera.tag = "Untagged";
+
+            loadingScreen.gameObject.SetActive(false);
+
         }
     }
 }

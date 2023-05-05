@@ -41,6 +41,9 @@ public class GameManager : MonoBehaviour
 
     private void InitializeLevel(Scene scene, LoadSceneMode mode)
     {
+        if (!scene.name.Contains("Level"))
+            return;
+            
         if (Player == null)
             Player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
 
