@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using mianjoto.Scene;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,22 +27,19 @@ public class GameManager : MonoBehaviour
 
     void OnEnable()
     {
+        SceneManager.sceneLoaded += InitializeLevel;
         BaseEnemyStateMachine.OnEnemyDeath += UpdateEnemyCount;
         PlayerManager.OnPlayerDeath += HandlePlayerDeath;
     }
 
     void OnDisable()
     {
+        SceneManager.sceneLoaded -= InitializeLevel;
         BaseEnemyStateMachine.OnEnemyDeath -= UpdateEnemyCount;
         PlayerManager.OnPlayerDeath -= HandlePlayerDeath;
     }
 
-    void Start()
-    {
-        InitializeGame();
-    }
-
-    private void InitializeGame()
+    private void InitializeLevel(Scene scene, LoadSceneMode mode)
     {
         if (Player == null)
             Player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
