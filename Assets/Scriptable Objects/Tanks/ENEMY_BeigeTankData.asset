@@ -16,7 +16,7 @@ MonoBehaviour:
   TankTag: Enemy
   StartingHealth: 1
   BulletPrefab: {fileID: 7377736342347359843, guid: f7c01f3edffc446488b8dc536d4b7dcb, type: 3}
-  BulletSpeedInUnitsPerSecond: 1
+  BulletSpeedInUnitsPerSecond: 3
   MaxBulletsInReserve: 1
   ShootDelayInSeconds: 0.1
   ReloadAfterShootingDelayInSeconds: 1.5
@@ -25,18 +25,23 @@ MonoBehaviour:
   BulletDamage: 1
   NumberOfRicochets: 4
   MovementSpeed: 0
-  BodyRotateSpeed: 2
-  HeadRotationDamping: 1
+  BodyRotateSpeed: 2.4
+  HeadRotationSpeed: 10
   HeadFollowsCursor: 0
-  StateChangeCooldownInSeconds: 2
-  MinimumWaitTimeInSeconds: 1
-  MaximumWaitTimeInSeconds: 3
+  RotatesHeadSmoothly: 1
+  HeadRotationDamping: 1
   LookAtAngleThresholdInDegrees: 20
-  MinimumRandomHeadRotationAngle: 60
   PlayerDetectionRange: 10
   AttackRange: 5
   LeadShotFactorInUnits: 3
+  StateChangeCooldownInSeconds: 2
+  MinimumWaitTimeInSeconds: 1
+  MaximumWaitTimeInSeconds: 3
+  MinimumRandomHeadRotationAngle: 60
+  ShouldInterruptCurrentStateOnDetectRangeEnter: 0
+  ShouldInterruptCurrentStateOnAttackRangeEnter: 0
   IsAlwaysLookingAtPlayer: 0
   IsAlwaysRotatingTowardPlayer: 0
   IsAlwaysChasingPlayer: 0
   IsAlwaysAttackingAtPlayer: 0
+  ShouldBodyRotateTowardHeadDirection: 0

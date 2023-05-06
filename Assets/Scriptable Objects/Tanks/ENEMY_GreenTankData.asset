@@ -32,7 +32,7 @@ MonoBehaviour:
   HeadRotationDamping: 1.4
   LookAtAngleThresholdInDegrees: 5
   PlayerDetectionRange: 10
-  AttackRange: 12
+  AttackRange: 21.58
   LeadShotFactorInUnits: 3
   StateChangeCooldownInSeconds: 0.5
   MinimumWaitTimeInSeconds: 2

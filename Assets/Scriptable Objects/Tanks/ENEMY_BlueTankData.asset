@@ -16,7 +16,7 @@ MonoBehaviour:
   TankTag: Enemy
   StartingHealth: 1
   BulletPrefab: {fileID: 7377736342347359843, guid: f7c01f3edffc446488b8dc536d4b7dcb, type: 3}
-  BulletSpeedInUnitsPerSecond: 6
+  BulletSpeedInUnitsPerSecond: 8.8
   MaxBulletsInReserve: 1
   ShootDelayInSeconds: 2
   ReloadAfterShootingDelayInSeconds: 1
@@ -32,7 +32,7 @@ MonoBehaviour:
   HeadRotationDamping: 1.4
   LookAtAngleThresholdInDegrees: 5
   PlayerDetectionRange: 15
-  AttackRange: 9
+  AttackRange: 31.64
   LeadShotFactorInUnits: 2
   StateChangeCooldownInSeconds: 0
   MinimumWaitTimeInSeconds: 0
