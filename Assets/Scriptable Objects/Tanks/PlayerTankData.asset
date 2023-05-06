@@ -24,9 +24,9 @@ MonoBehaviour:
   BulletLifeTimeInSeconds: 5
   BulletDamage: 1
   NumberOfRicochets: 1
-  MovementSpeed: 1.6
+  MovementSpeed: 3
   BodyRotateSpeed: 1
-  HeadRotationSpeed: 150
+  HeadRotationSpeed: 200
   HeadFollowsCursor: 1
   RotatesHeadSmoothly: 0
   HeadRotationDamping: 10

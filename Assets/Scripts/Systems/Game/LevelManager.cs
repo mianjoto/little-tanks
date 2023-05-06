@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using mianjoto.Scene;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -24,16 +25,21 @@ public class LevelManager : MonoBehaviour
     #region GameManager Subscription
     void OnEnable()
     {
+        SceneManager.sceneLoaded += InitializeLevel;
         GameManager.OnLevelComplete += ProceedLevel;
     }
     void OnDisable()
     {
+        SceneManager.sceneLoaded -= InitializeLevel;
         GameManager.OnLevelComplete -= ProceedLevel;
     }
     #endregion
     
-    void Start()
+    void InitializeLevel(Scene scene, LoadSceneMode mode)
     {
+        if (!scene.name.Contains("Level"))
+            return;
+
         if (CurrentLevel == 0)
             CurrentLevel = 1;
         
@@ -51,6 +57,8 @@ public class LevelManager : MonoBehaviour
 
     public Transform GetPlayerSpawnPoint()
     {
+        var obj = GameObject.FindGameObjectWithTag(PLAYER_SPAWN_POINT_TAG);
+        Debug.Log(obj);
         return GameObject.FindGameObjectWithTag(PLAYER_SPAWN_POINT_TAG).transform;
     }
 
