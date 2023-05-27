@@ -26,13 +26,28 @@ MonoBehaviour:
   NumberOfRicochets: 2
   MovementSpeed: 1.4
   BodyRotateSpeed: 1
-  HeadRotationDamping: 7
+  HeadRotationSpeed: 10
   HeadFollowsCursor: 0
-  StateChangeCooldownInSeconds: 0.3
+  RotatesHeadSmoothly: 1
+  HeadRotationDamping: 7
+  LookAtAngleThresholdInDegrees: 20
+  ShotAudioClip: {fileID: 8300000, guid: cb7d91fb350b4e842a121d105586fb7b, type: 3}
+  ShotAudioOptions: {fileID: 11400000, guid: c1cc01bcf1146a1468e8ed45e2d4c812, type: 2}
+  HitAudioClip: {fileID: 0}
+  HitAudioOptions: {fileID: 0}
+  DeathAudioClip: {fileID: 0}
+  DeathAudioOptions: {fileID: 0}
   PlayerDetectionRange: 10
   AttackRange: 6
   LeadShotFactorInUnits: 2
+  StateChangeCooldownInSeconds: 0.3
+  MinimumWaitTimeInSeconds: 1
+  MaximumWaitTimeInSeconds: 3
+  MinimumRandomHeadRotationAngle: 60
+  ShouldInterruptCurrentStateOnDetectRangeEnter: 0
+  ShouldInterruptCurrentStateOnAttackRangeEnter: 0
   IsAlwaysLookingAtPlayer: 1
   IsAlwaysRotatingTowardPlayer: 1
   IsAlwaysChasingPlayer: 1
   IsAlwaysAttackingAtPlayer: 1
+  ShouldBodyRotateTowardHeadDirection: 0

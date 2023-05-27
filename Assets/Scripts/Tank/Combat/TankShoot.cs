@@ -7,6 +7,8 @@ public class TankShoot : MonoBehaviour
     [SerializeField] Transform headTransform;
     TankManager _tankManager;
     TankAmmoReserve _tankAmmoReserve;
+    AudioClip _shotAudioClip;
+    AudioOptions _shotAudioOptions;
 
     TankData _tankData;
 
@@ -19,12 +21,18 @@ public class TankShoot : MonoBehaviour
        _tankData = _tankManager.TankData;
        _bulletPrefab = _tankData.BulletPrefab;
         _tankAmmoReserve = new TankAmmoReserve(_tankData);
+
+        _shotAudioClip = _tankData.ShotAudioClip;
+        _shotAudioOptions = _tankData.ShotAudioOptions;
     }
 
     public void Shoot() 
     {
-        if (HasAmmoAndCanShoot)
-            InstantiateBullet();
+        if (!HasAmmoAndCanShoot)
+            return;
+        
+        InstantiateBullet();
+        AudioManager.Instance.PlaySound(_shotAudioClip, _shotAudioOptions);
     }
 
     bool HasAmmoAndCanShoot => _tankAmmoReserve.HasAmmo && CanShootAfterShootDelay;

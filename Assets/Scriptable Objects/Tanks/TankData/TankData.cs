@@ -37,4 +37,14 @@ public class TankData : ScriptableObject
     public float HeadRotationDamping = 10f;
     public byte LookAtAngleThresholdInDegrees = 20;
     #endregion
+
+    #region Audio Settings
+    [Header("Audio Settings")]
+    public AudioClip ShotAudioClip;
+    public AudioOptions ShotAudioOptions;
+    public AudioClip HitAudioClip;
+    public AudioOptions HitAudioOptions;
+    public AudioClip DeathAudioClip;
+    public AudioOptions DeathAudioOptions;
+    #endregion
 }

@@ -31,6 +31,12 @@ MonoBehaviour:
   RotatesHeadSmoothly: 0
   HeadRotationDamping: 1.4
   LookAtAngleThresholdInDegrees: 5
+  ShotAudioClip: {fileID: 8300000, guid: cb7d91fb350b4e842a121d105586fb7b, type: 3}
+  ShotAudioOptions: {fileID: 11400000, guid: c1cc01bcf1146a1468e8ed45e2d4c812, type: 2}
+  HitAudioClip: {fileID: 0}
+  HitAudioOptions: {fileID: 0}
+  DeathAudioClip: {fileID: 0}
+  DeathAudioOptions: {fileID: 0}
   PlayerDetectionRange: 15
   AttackRange: 9
   LeadShotFactorInUnits: 2
