@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using mianjoto.Scene;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,27 +23,31 @@ public class GameManager : MonoBehaviour
 
     #region Level System
     public static Action OnLevelComplete;
+    public byte CurrentLevel { get; private set; }
     #endregion
 
     void OnEnable()
     {
+        SceneManager.sceneLoaded += InitializeLevel;
         BaseEnemyStateMachine.OnEnemyDeath += UpdateEnemyCount;
         PlayerManager.OnPlayerDeath += HandlePlayerDeath;
     }
 
     void OnDisable()
     {
+        SceneManager.sceneLoaded -= InitializeLevel;
         BaseEnemyStateMachine.OnEnemyDeath -= UpdateEnemyCount;
         PlayerManager.OnPlayerDeath -= HandlePlayerDeath;
     }
 
-    void Start()
+    private void InitializeLevel(Scene scene, LoadSceneMode mode)
     {
-        InitializeGame();
-    }
-
-    private void InitializeGame()
-    {
+        if (!scene.name.Contains("Level"))
+            return;
+        
+        if (CurrentLevel == 0 || CurrentLevel > LevelManager.LAST_LEVEL)
+            CurrentLevel = SceneLoader.GetCurrentLevelNumber();
+        
         if (Player == null)
             Player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
 
@@ -58,7 +63,21 @@ public class GameManager : MonoBehaviour
         NumberOfEnemiesRemaining--;
         NumberOfEnemyKills++;
         if (NumberOfEnemiesRemaining == 0)
-            OnLevelComplete?.Invoke();
+            ProceedLevel();
+    }
+
+    void ProceedLevel()
+    {
+        OnLevelComplete?.Invoke();
+
+        byte nextLevel = (byte)(CurrentLevel + 1);
+
+        if (CurrentLevel >= LevelManager.LAST_LEVEL)
+            SceneLoader.Instance.LoadGameComplete();
+        else
+            SceneLoader.Instance.LoadLevel(nextLevel);
+
+        CurrentLevel = nextLevel;
     }
 
     void HandlePlayerDeath()
@@ -71,6 +90,6 @@ public class GameManager : MonoBehaviour
         if (NumberOfLivesRemaining == 0)
             SceneLoader.Instance.LoadGameOver();
         else
-            SceneLoader.Instance.LoadLevel(LevelManager.Instance.CurrentLevel);
+            SceneLoader.Instance.LoadLevel(CurrentLevel);
     }
 }

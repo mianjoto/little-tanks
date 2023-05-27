@@ -586,7 +586,7 @@ GameObject:
   - component: {fileID: 9172184885314896663}
   - component: {fileID: 9172184885314896662}
   m_Layer: 0
-  m_Name: Beige_EnemyTank 1
+  m_Name: Beige_EnemyTank
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

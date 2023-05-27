@@ -9,8 +9,10 @@ TagManager:
   - Bullet
   - Enemy
   - PlayerTank
-  - Ramp
+  - Level
   - SpawnPoint
+  - Loading
+  - Ramp
   layers:
   - Default
   - TransparentFX

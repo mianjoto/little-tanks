@@ -161,7 +161,15 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         _tankMovement.MoveTankForward();
     }
 
-    public virtual void Attack() => _tankShoot.Shoot();
+    public virtual void Attack()
+    {
+        if (_tankShoot.CanShootSafely())
+        {
+            _tankShoot.Shoot();
+        } 
+    }
+
+    
 
     public virtual void Wait()
     {
@@ -354,11 +362,6 @@ public abstract class BaseEnemyStateMachine : MonoBehaviour, IEnemyBehavior
         Gizmos.color = Color.green;
         var predictedPlayerPosition = GetPredictedPlayerPosition();
         Gizmos.DrawWireSphere(predictedPlayerPosition, 0.5f);
-
-        if (_tankHead != null)
-        {
-            Gizmos.DrawRay(transform.position, _tankHead.transform.forward*15);
-        }
     }
 }
 

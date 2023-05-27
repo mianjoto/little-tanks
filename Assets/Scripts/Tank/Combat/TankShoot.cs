@@ -35,6 +35,25 @@ public class TankShoot : MonoBehaviour
         AudioManager.Instance.PlaySound(_shotAudioClip, _shotAudioOptions);
     }
 
+    Ray safetyRay;
+
+    public bool CanShootSafely()
+    {
+        safetyRay = new Ray(bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.up);
+        RaycastHit hit;
+
+        if (Physics.Raycast(safetyRay, out hit, 5f, LayerMask.NameToLayer("Wall")))
+        {
+            Debug.Log("Hit info: " + hit.collider.gameObject.name);
+            if (hit.collider.CompareTag("Wall"))
+            {
+                Debug.Log($"${this.gameObject.name} Can't shoot, ray hit");
+                return false;
+            }
+        }
+        return true;
+    }
+
     bool HasAmmoAndCanShoot => _tankAmmoReserve.HasAmmo && CanShootAfterShootDelay;
     bool CanShootAfterShootDelay => Time.time > _lastTimeShot + _tankData.ShootDelayInSeconds;
 
@@ -52,6 +71,12 @@ public class TankShoot : MonoBehaviour
         bullet.transform.position = bulletSpawnPoint.position;
         float angle = headTransform.eulerAngles.y;
         bullet.transform.eulerAngles = new Vector3(bullet.transform.eulerAngles.x, angle, bullet.transform.eulerAngles.z);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.up*5);
     }
 
 }

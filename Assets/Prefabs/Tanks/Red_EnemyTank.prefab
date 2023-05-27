@@ -328,7 +328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TankData: {fileID: 11400000, guid: 9328199beedd0394d9557e065b6ca2e6, type: 2}
-  TankHead: {fileID: 0}
+  TankHead: {fileID: 8766453333876392370}
   Health: 3
 --- !u!114 &4318029815951901186
 MonoBehaviour:
