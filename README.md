@@ -14,18 +14,17 @@
 # Little Tanks
 
 Play as a little toy tank with tiny missiles and battle in a play arena. See how far you can get!
+<img src="Documents/Screenshots/Game/little-tanks-gameplay.gif" width=90%>
 
 ## Play the game 🎮
 
-![Video of gameplay](Documents/Screenshots/README/little-tanks-gameplay.gif)
-
-You can download and play Little Tanks here: **[https://mianjoto.itch.io/little-tanks](https://mianjoto.itch.io/little-tanks)**
+<p>You can download and play Little Tanks here: <strong><a href="https://mianjoto.itch.io/little-tanks">https://mianjoto.itch.io/little-tanks</a></strong></p>
 
 ## Screenshots 📷
 
-![Screenshot of Level 9](Documents/Screenshots/game/level-9.png)
-![Screenshot of Level 10](Documents/Screenshots/game/level-10.png)
-![Screenshot of Level 5](Documents/Screenshots/game/level-5.png)
+![Screenshot of Level 9](Documents/Screenshots/Game/level-9.png)
+![Screenshot of Level 10](Documents/Screenshots/Game/level-10.png)
+![Screenshot of Level 5](Documents/Screenshots/Game/level-5.png)
 
 > Note: Gameplay, visual effects, and features are subject to change. These screenshots may not be representative of the final product.
 
